@@ -1,0 +1,270 @@
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
+    margin: 0;
+}
+
+.main-page-title {
+    font-size: 85px;
+    letter-spacing: 18px;
+    line-height: 1.1;
+    margin-bottom: 60px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow:
+        0 0 5px rgba(255, 255, 255, 0.8),
+        0 0 10px rgba(255, 255, 255, 0.5),
+        0 0 20px rgba(255, 255, 255, 0.3);
+    animation: neonBreathe 3s infinite ease-in-out;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@keyframes neonBreathe {
+
+    0%,
+    100% {
+        text-shadow:
+            0 0 5px rgba(255, 255, 255, 0.8),
+            0 0 10px rgba(255, 255, 255, 0.5);
+        opacity: 0.9;
+    }
+
+    50% {
+        text-shadow:
+            0 0 10px rgba(255, 255, 255, 0.9),
+            0 0 20px rgba(255, 255, 255, 0.6),
+            0 0 30px rgba(255, 255, 255, 0.3);
+        opacity: 1;
+    }
+}
+
+.rules-box {
+    background: #000;
+    border: 6px double #fff;
+    border-radius: 20px;
+    padding: 30px;
+    width: 100%;
+    max-width: 650px;
+    margin-bottom: 40px;
+}
+
+.rules-title {
+    font-weight: bold;
+    text-align: center;
+    font-size: 22px;
+    border-bottom: 2px solid #fff;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.penalty-text {
+    color: #ff4444;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.arcade-machine {
+    border: 2px solid #fff;
+    border-radius: 40px;
+    padding: 10px;
+    width: 380px;
+    margin-bottom: 50px;
+}
+
+.arcade-border {
+    background-color: #fff;
+    color: #000;
+    border: 8px double #000;
+    border-radius: 30px;
+    padding: 35px 25px;
+    text-align: center;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.input-wrapper {
+    margin-bottom: 25px;
+}
+
+#playerName {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #000;
+    font-family: inherit;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.error-msg {
+    color: #ff0000;
+    font-size: 11px;
+    font-weight: bold;
+    margin-top: 8px;
+    display: none;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 30px;
+}
+
+.lvl-option input {
+    position: absolute;
+    opacity: 0;
+}
+
+.lvl-label {
+    display: block;
+    padding: 14px;
+    border: 2px solid #000;
+    font-weight: bold;
+    cursor: pointer;
+    background: #fff;
+}
+
+.lvl-option input:checked+.lvl-label {
+    background: #000;
+    color: #fff;
+}
+
+.action-btn {
+    width: 100%;
+    padding: 16px;
+    border: 2px solid #000;
+    font-family: inherit;
+    font-weight: 900;
+    background: #fff;
+    color: #000;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+.next-btn-styled {
+    width: 180px !important;
+    height: 50px;
+    margin: 20px auto !important;
+    background: #000 !important;
+    color: #fff !important;
+    border: 3px solid #000 !important;
+    box-shadow: 4px 4px 0px #888;
+    font-size: 18px !important;
+    letter-spacing: 2px;
+    display: block;
+}
+
+.next-btn-styled:active {
+    box-shadow: 0px 0px 0px #888;
+    transform: translate(2px, 2px);
+}
+
+.game-screen-area {
+    background: #000;
+    color: #fff;
+    border-radius: 20px;
+    padding: 35px;
+    margin: 25px 0;
+}
+
+.game-screen-area h2 {
+    font-size: 56px;
+    margin: 0;
+}
+
+.feedback-msg {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    min-height: 20px;
+}
+
+.feedback-success {
+    color: #28a745;
+}
+
+.feedback-error {
+    color: #dc3545;
+}
+
+.shake {
+    animation: shakeAnim 0.4s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes shakeAnim {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+.scoreboard-container {
+    width: 100%;
+    max-width: 750px;
+    background: #fff;
+    color: #000;
+    border: 10px double #000;
+    border-radius: 20px;
+    padding: 30px;
+}
+
+/* התיקון לכותרת טבלת השיאים */
+#table-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    border-bottom: 3px solid #000;
+    padding: 12px;
+    background: #eee;
+}
+
+td {
+    border-bottom: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
