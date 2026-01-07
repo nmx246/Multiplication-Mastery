@@ -5,7 +5,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 60px 20px;
+    padding: 40px 20px;
     margin: 0;
     overflow-x: hidden;
 }
@@ -14,11 +14,11 @@ body {
     font-size: 70px;
     letter-spacing: 12px;
     line-height: 1.1;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
     text-align: center;
     text-transform: uppercase;
     color: #fff;
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff;
     display: flex;
     flex-direction: column;
 }
@@ -27,50 +27,21 @@ body {
     width: 100%;
     max-width: 550px; 
     box-sizing: border-box;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
-.rules-box {
-    border: 3px solid #fff;
-    border-radius: 15px;
-    padding: 25px;
-}
+.rules-box { border: 3px solid #fff; border-radius: 15px; padding: 25px; }
+.rules-title { font-weight: bold; text-align: center; font-size: 22px; margin-bottom: 20px; }
+.rules-content p, .rules-content li { font-size: 17px; margin: 10px 0; }
+.penalty-text { color: #ff4444; font-weight: bold; font-size: 14px; margin: 8px 0; }
 
-.rules-title {
-    font-weight: bold;
-    text-align: center;
-    font-size: 22px;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
-}
-
-.rules-content p, .rules-content li {
-    font-size: 17px;
-    margin: 10px 0;
-}
-
-.penalty-text {
-    color: #ff4444;
-    font-weight: bold;
-    font-size: 14px;
-    margin: 8px 0;
-    text-transform: uppercase;
-}
-
-.spacer-v { height: 30px; }
-
-.arcade-machine {
-    border: 2px solid #fff;
-    border-radius: 40px;
-    padding: 10px;
-}
-
+.arcade-machine { border: 2px solid #fff; border-radius: 40px; padding: 10px; }
 .arcade-border {
     background-color: #fff;
     color: #000;
     border: 8px double #000;
     border-radius: 30px;
-    padding: 35px;
+    padding: 30px 20px;
     text-align: center;
     min-height: 520px;
     display: flex;
@@ -78,151 +49,33 @@ body {
     justify-content: space-between;
 }
 
-#playerName {
-    width: 90%;
-    padding: 12px;
-    border: 2px solid #000;
-    font-family: inherit;
-    text-align: center;
-    font-weight: bold;
-    font-size: 18px;
-    margin: 0 auto;
-    display: block;
-}
+#playerName { width: 90%; padding: 12px; border: 2px solid #000; font-family: inherit; text-align: center; font-size: 18px; margin: 0 auto; display: block; }
+.error-msg { color: #ff0000; font-size: 12px; font-weight: bold; margin-top: 10px; display: none; }
 
-.error-msg {
-    color: #ff0000;
-    font-size: 12px;
-    font-weight: bold;
-    margin-top: 10px;
-    display: none;
-}
-
-.radio-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 10px;
-    width: 90%;
-    margin: 0 auto;
-}
-
-.lvl-label {
-    display: block;
-    padding: 12px;
-    border: 2px solid #000;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 15px;
-}
-
+.radio-group { display: flex; flex-direction: column; gap: 8px; width: 90%; margin: 0 auto; }
+.lvl-label { display: block; padding: 12px; border: 2px solid #000; font-weight: bold; cursor: pointer; }
 .lvl-option input { position: absolute; opacity: 0; }
-.lvl-option input:checked+.lvl-label {
-    background: #000;
-    color: #fff;
-}
+.lvl-option input:checked+.lvl-label { background: #000; color: #fff; }
 
-.action-btn {
-    width: 90%;
-    margin: 0 auto;
-    padding: 16px;
-    border: 3px solid #000;
-    font-family: inherit;
-    font-weight: 900;
-    background: #fff;
-    color: #000;
-    cursor: pointer;
-    text-transform: uppercase;
-    font-size: 18px;
-}
+.action-btn { width: 90%; margin: 0 auto; padding: 16px; border: 3px solid #000; font-family: inherit; font-weight: 900; background: #fff; color: #000; cursor: pointer; text-transform: uppercase; font-size: 18px; }
+.ready-btn { margin-top: 30px; }
+.bottom-controls { margin-top: 40px; }
 
-.ready-btn { margin-top: 40px; }
-.bottom-controls { margin-top: 60px; padding-top: 0; border-top: none; }
+.game-screen-area { background: #000; color: #fff; border-radius: 20px; padding: 40px; margin: 20px 0; display: flex; justify-content: center; align-items: center; }
+.game-screen-area h2 { font-size: 60px; margin: 0; text-align: center; width: 100%; }
 
-.game-screen-area {
-    background: #000;
-    color: #fff;
-    border-radius: 20px;
-    padding: 40px;
-    margin: 20px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    direction: ltr;
-}
+.scoreboard-container { background: #fff; color: #000; border: 8px double #000; border-radius: 25px; padding: 25px; text-align: center; }
+.level-dropdown { width: 150px; padding: 8px; font-family: inherit; border: 2px solid #000; text-align-last: center; }
 
-.game-screen-area h2 {
-    font-size: 60px;
-    margin: 0;
-    text-align: center;
-    width: 100%;
-}
-
-.scoreboard-container {
-    background: #fff;
-    color: #000;
-    border: 8px double #000;
-    border-radius: 25px;
-    padding: 25px;
-    text-align: center; /* למירכוז כפתור האיפוס */
-}
-
-#table-title {
-    text-align: center;
-    font-weight: 900;
-    font-size: 26px;
-    margin-bottom: 15px;
-}
-
-.dropdown-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 25px;
-}
-
-.level-dropdown {
-    width: 150px;
-    padding: 8px;
-    font-family: inherit;
-    font-weight: bold;
-    border: 2px solid #000;
-    text-align: center;
-    text-align-last: center;
-}
-
-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-th { border-bottom: 3px solid #000; padding: 12px; background: #eee; font-size: 15px; }
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th { border-bottom: 3px solid #000; padding: 12px; background: #eee; }
 td { padding: 12px; border-bottom: 1px solid #ddd; text-align: center; font-size: 18px; }
 
-/* עיצוב כפתור ניקוי תוצאות */
-.clean-btn {
-    background: none;
-    border: 1px solid #ccc;
-    color: #999;
-    font-family: inherit;
-    font-size: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-radius: 4px;
-    margin-top: 10px;
-}
-
-.clean-btn:hover {
-    background: #eee;
-    color: #333;
-}
+.clean-btn { background: none; border: 1px solid #ccc; color: #999; font-size: 10px; padding: 5px; cursor: pointer; margin-top: 10px; }
 
 @media (max-width: 600px) {
-    .main-page-title {
-        font-size: 32px;
-        letter-spacing: 6px;
-        margin-bottom: 30px;
-    }
-    .rules-box, .arcade-machine, .scoreboard-container { width: 95%; }
+    .main-page-title { font-size: 32px; letter-spacing: 6px; }
     .game-screen-area h2 { font-size: 45px; }
-    .arcade-border { padding: 20px 15px; }
 }
 
 .shake { animation: shakeAnim 0.4s both; }
