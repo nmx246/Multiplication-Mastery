@@ -58,12 +58,10 @@ function setupInputListeners() {
     input.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
             e.preventDefault();
-            checkAnswer();
+            if (currentIndex < exercises.length) {
+                checkAnswer();
+            }
         }
-    });
-    document.getElementById('nextBtn').addEventListener('click', function (e) {
-        e.preventDefault();
-        checkAnswer();
     });
 }
 
@@ -75,6 +73,7 @@ function showExercise() {
 
     const input = document.getElementById('userGuess');
     input.value = '';
+    input.disabled = false;
     setTimeout(() => { input.focus(); }, 10);
 }
 
@@ -91,33 +90,42 @@ function checkAnswer() {
     if (val === correctAns) {
         correctAnswers++;
         lastFeedback = `<span style="color:green">${positiveWords[Math.floor(Math.random() * positiveWords.length)]}</span>`;
-        nextStep();
     } else {
         baseScore -= 3;
         lastFeedback = `<span style="color:red">Wrong! Answer: ${correctAns}</span>`;
         const screen = document.getElementById('screenArea');
         screen.classList.add('shake');
-        setTimeout(() => {
-            screen.classList.remove('shake');
-            nextStep();
-        }, 400);
+        setTimeout(() => screen.classList.remove('shake'), 400);
+    }
+
+    document.getElementById('feedbackArea').innerHTML = lastFeedback;
+
+    if (currentIndex === exercises.length - 1) {
+        document.getElementById('nextBtn').style.display = 'none';
+        document.getElementById('finishBtn').style.display = 'block';
+        input.disabled = true;
+    } else {
+        currentIndex++;
+        setTimeout(showExercise, 400);
     }
 }
 
-function nextStep() {
-    currentIndex++;
-    if (currentIndex < exercises.length) {
-        showExercise();
-    } else {
-        finishGame();
-    }
+function formatTime(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
 
 function finishGame() {
     document.getElementById('game-play-screen').style.display = 'none';
-    const durationSeconds = (Date.now() - startTime) / 1000;
+    const durationMs = Date.now() - startTime;
+    const durationSeconds = durationMs / 1000;
     const timePenalty = Math.max(0, (durationSeconds - 300) / 10);
     const finalScore = Math.round(Math.max(0, baseScore - timePenalty));
+
+    const successRate = ((correctAnswers / 30) * 100).toFixed(2);
+    const timeStr = formatTime(durationMs);
 
     const now = new Date();
     const dateStr = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}`;
@@ -125,10 +133,14 @@ function finishGame() {
     saveHighScore(currentPlayer, finalScore, dateStr);
 
     document.getElementById('end-screen').innerHTML = `
-        <div style="font-weight: bold; margin-top: 20px;">
+        <div style="font-weight: bold; margin-top: 20px; line-height: 1.6;">
             <h2 style="border-bottom: 2px solid #000; margin-bottom: 20px; font-size: 32px;">GAME OVER</h2>
-            <p style="font-size: 20px;">Correct: ${correctAnswers}/30</p>
-            <div style="font-size: 36px; border: 4px solid #000; padding: 20px; margin: 20px auto; background:#000; color:#fff; width: fit-content;">
+            <div style="text-align: left; display: inline-block; font-size: 18px;">
+                <p>CORRECT ANSWERS: ${correctAnswers}/30</p>
+                <p>SUCCESS RATE: ${successRate}%</p>
+                <p>DURATION: ${timeStr}</p>
+            </div>
+            <div style="font-size: 36px; border: 4px solid #000; padding: 20px; margin: 25px auto; background:#000; color:#fff; width: fit-content;">
                 SCORE: ${finalScore}
             </div>
         </div>
@@ -154,7 +166,7 @@ function updateTableDisplay() {
             <tr>
                 <td>#${i + 1}</td>
                 <td>${s.date || '--/--'}</td>
-                <td style="text-align:left; padding-left:10px;"><b>${s.name}</b></td>
+                <td><b>${s.name}</b></td>
                 <td>${s.score}</td>
             </tr>
         `).join('');
