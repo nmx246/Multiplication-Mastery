@@ -41,6 +41,8 @@
                         <div id="nameError" class="error-msg">PLEASE ENTER YOUR NAME TO START</div>
                     </div>
 
+                    <div class="spacer-v"></div>
+
                     <div class="radio-group">
                         <label class="lvl-option">
                             <input type="radio" name="level" value="10" data-name="Easy" checked>
@@ -55,33 +57,38 @@
                             <span class="lvl-label">HARD (1-50)</span>
                         </label>
                         <label class="lvl-option">
-                            <input type="radio" name="level" value="100" data-name="Crazy">
-                            <span class="lvl-label">CRAZY (1-100)</span>
+                            <input type="radio" name="level" value="100" data-name="Insane">
+                            <span class="lvl-label">INSANE (1-100)</span>
                         </label>
                     </div>
 
-                    <button class="action-btn" onclick="validateAndStart()">I'M READY!</button>
+                    <button class="action-btn ready-btn" onclick="validateAndStart()">I'M READY!</button>
                 </div>
                 <div id="exercise-list"></div>
             </div>
 
             <div class="bottom-controls">
-                <button class="action-btn" onclick="location.reload()">RESTART</button>
+                <button class="action-btn restart-btn" onclick="location.reload()">RESTART</button>
             </div>
         </div>
     </div>
 
     <div class="scoreboard-container">
         <p id="table-title">HALL OF FAME</p>
+        <div class="dropdown-wrapper">
+            <select id="levelSelector" class="level-dropdown" onchange="updateTableDisplay()">
+                <option value="Insane">INSANE</option>
+                <option value="Hard">HARD</option>
+                <option value="Medium">MEDIUM</option>
+                <option value="Easy">EASY</option>
+            </select>
+        </div>
         <table id="high-score-table">
             <thead>
                 <tr>
                     <th>RANK</th>
                     <th>NAME</th>
                     <th>SCORE</th>
-                    <th>TIME</th>
-                    <th>CORRECT</th>
-                    <th>RATE</th>
                 </tr>
             </thead>
             <tbody id="high-score-body"></tbody>
