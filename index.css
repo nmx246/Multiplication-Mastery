@@ -23,11 +23,9 @@ body {
     flex-direction: column;
 }
 
-.rules-box,
-.arcade-machine,
-.scoreboard-container {
+.rules-box, .arcade-machine, .scoreboard-container {
     width: 100%;
-    max-width: 550px;
+    max-width: 550px; 
     box-sizing: border-box;
     margin-bottom: 40px;
 }
@@ -46,8 +44,7 @@ body {
     letter-spacing: 2px;
 }
 
-.rules-content p,
-.rules-content li {
+.rules-content p, .rules-content li {
     font-size: 17px;
     margin: 10px 0;
 }
@@ -60,9 +57,7 @@ body {
     text-transform: uppercase;
 }
 
-.spacer-v {
-    height: 30px;
-}
+.spacer-v { height: 30px; }
 
 .arcade-machine {
     border: 2px solid #fff;
@@ -121,11 +116,7 @@ body {
     font-size: 15px;
 }
 
-.lvl-option input {
-    position: absolute;
-    opacity: 0;
-}
-
+.lvl-option input { position: absolute; opacity: 0; }
 .lvl-option input:checked+.lvl-label {
     background: #000;
     color: #fff;
@@ -145,17 +136,9 @@ body {
     font-size: 18px;
 }
 
-.ready-btn {
-    margin-top: 40px;
-}
+.ready-btn { margin-top: 40px; }
+.bottom-controls { margin-top: 60px; padding-top: 0; border-top: none; }
 
-.bottom-controls {
-    margin-top: 60px;
-    padding-top: 0;
-    border-top: none;
-}
-
-/* תיקון מירכוז המספרים בתרגיל */
 .game-screen-area {
     background: #000;
     color: #fff;
@@ -163,11 +146,9 @@ body {
     padding: 40px;
     margin: 20px 0;
     display: flex;
-    /* הוספת flex למירכוז */
     justify-content: center;
     align-items: center;
     direction: ltr;
-    /* מניעת קפיצה לימין בעברית */
 }
 
 .game-screen-area h2 {
@@ -183,6 +164,7 @@ body {
     border: 8px double #000;
     border-radius: 25px;
     padding: 25px;
+    text-align: center; /* למירכוז כפתור האיפוס */
 }
 
 #table-title {
@@ -208,67 +190,44 @@ body {
     text-align-last: center;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+th { border-bottom: 3px solid #000; padding: 12px; background: #eee; font-size: 15px; }
+td { padding: 12px; border-bottom: 1px solid #ddd; text-align: center; font-size: 18px; }
+
+/* עיצוב כפתור ניקוי תוצאות */
+.clean-btn {
+    background: none;
+    border: 1px solid #ccc;
+    color: #999;
+    font-family: inherit;
+    font-size: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    margin-top: 10px;
 }
 
-th {
-    border-bottom: 3px solid #000;
-    padding: 12px;
+.clean-btn:hover {
     background: #eee;
-    font-size: 15px;
+    color: #333;
 }
 
-td {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
-    text-align: center;
-    font-size: 18px;
-}
-
-/* תיקון כותרת לנייד */
 @media (max-width: 600px) {
     .main-page-title {
         font-size: 32px;
-        /* הקטנה משמעותית לנייד */
         letter-spacing: 6px;
         margin-bottom: 30px;
     }
-
-    .rules-box,
-    .arcade-machine,
-    .scoreboard-container {
-        width: 95%;
-    }
-
-    .game-screen-area h2 {
-        font-size: 45px;
-    }
-
-    .arcade-border {
-        padding: 20px 15px;
-    }
+    .rules-box, .arcade-machine, .scoreboard-container { width: 95%; }
+    .game-screen-area h2 { font-size: 45px; }
+    .arcade-border { padding: 20px 15px; }
 }
 
-.shake {
-    animation: shakeAnim 0.4s both;
-}
-
+.shake { animation: shakeAnim 0.4s both; }
 @keyframes shakeAnim {
-
-    10%,
-    90% {
-        transform: translate3d(-1px, 0, 0);
-    }
-
-    30%,
-    70% {
-        transform: translate3d(-4px, 0, 0);
-    }
-
-    40%,
-    60% {
-        transform: translate3d(4px, 0, 0);
-    }
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    30%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
 }
