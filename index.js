@@ -5,14 +5,20 @@ let baseScore = 100;
 let startTime;
 let currentLevelName = '';
 let currentPlayer = '';
+let lastFeedback = '';
 
 const positiveWords = ["Correct!", "Good Job!", "Amazing!", "Excellent!", "Awesome!", "Great!"];
 
-// איפוס מאובטח
-function secureReset() {
-    if (prompt("ENTER PASSWORD:") === "4327") {
+function showConfirmModal() {
+    document.getElementById('confirmModal').style.display = 'flex';
+}
+
+function confirmClean(isSure) {
+    if (isSure) {
         localStorage.clear();
         location.reload();
+    } else {
+        document.getElementById('confirmModal').style.display = 'none';
     }
 }
 
@@ -30,22 +36,17 @@ function validateAndStart() {
 }
 
 function startGame(choice) {
-    exercises = [];
-    currentIndex = 0;
-    correctAnswers = 0;
-    baseScore = 100;
-
+    exercises = []; currentIndex = 0; correctAnswers = 0; baseScore = 100; lastFeedback = '';
     for (let i = 0; i < 30; i++) {
         exercises.push({
             num1: Math.floor(Math.random() * choice) + 1,
             num2: Math.floor(Math.random() * choice) + 1
         });
     }
-
     document.getElementById('start-screen').style.display = 'none';
-    document.getElementById('game-play-area').style.display = 'block';
+    document.getElementById('game-play-screen').style.display = 'block';
     document.getElementById('machine-title').innerText = currentLevelName.toUpperCase();
-    document.getElementById('displayPlayerName').innerText = `PLAYER: ${currentPlayer}`;
+    document.getElementById('displayCurrentPlayer').innerText = `PLAYER: ${currentPlayer}`;
 
     startTime = Date.now();
     setupInputListeners();
@@ -54,76 +55,53 @@ function startGame(choice) {
 
 function setupInputListeners() {
     const input = document.getElementById('userGuess');
-    const nextBtn = document.getElementById('nextBtn');
-
-    // ENTER במחשב
     input.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
             e.preventDefault();
-            handleSubmission();
+            checkAnswer();
         }
     });
-
-    // DONE במובייל (איבוד פוקוס)
-    input.addEventListener('blur', function () {
-        if (input.value !== '') {
-            handleSubmission();
-        }
-    });
-
-    nextBtn.addEventListener('click', function (e) {
+    document.getElementById('nextBtn').addEventListener('click', function (e) {
         e.preventDefault();
-        handleSubmission();
+        checkAnswer();
     });
 }
 
 function showExercise() {
     const current = exercises[currentIndex];
-    const input = document.getElementById('userGuess');
-
     document.getElementById('exerciseDisplay').innerText = `${current.num1}×${current.num2}`;
     document.getElementById('questionCounter').innerText = `QUESTION ${currentIndex + 1}/30`;
+    document.getElementById('feedbackArea').innerHTML = lastFeedback;
 
+    const input = document.getElementById('userGuess');
     input.value = '';
-
-    // החזרת פוקוס – חשוב למובייל
-    setTimeout(() => {
-        input.focus({ preventScroll: true });
-    }, 50);
+    setTimeout(() => { input.focus(); }, 10);
 }
 
-function handleSubmission() {
+function checkAnswer() {
     const input = document.getElementById('userGuess');
     const val = parseInt(input.value);
-    const current = exercises[currentIndex];
-    const correctAns = current.num1 * current.num2;
+    const correctAns = exercises[currentIndex].num1 * exercises[currentIndex].num2;
 
     if (isNaN(val)) {
         input.focus();
         return;
     }
 
-    const feedbackArea = document.getElementById('feedbackArea');
-
     if (val === correctAns) {
         correctAnswers++;
-        feedbackArea.innerHTML = `<span style="color:green">${positiveWords[Math.floor(Math.random() * positiveWords.length)]}</span>`;
+        lastFeedback = `<span style="color:green">${positiveWords[Math.floor(Math.random() * positiveWords.length)]}</span>`;
         nextStep();
     } else {
         baseScore -= 3;
-        feedbackArea.innerHTML = `<span style="color:red">Wrong! Answer: ${correctAns}</span>`;
-        document.getElementById('screenArea').classList.add('shake');
-
+        lastFeedback = `<span style="color:red">Wrong! Answer: ${correctAns}</span>`;
+        const screen = document.getElementById('screenArea');
+        screen.classList.add('shake');
         setTimeout(() => {
-            document.getElementById('screenArea').classList.remove('shake');
+            screen.classList.remove('shake');
             nextStep();
         }, 400);
     }
-
-    // להשאיר את המקלדת פתוחה
-    setTimeout(() => {
-        input.focus({ preventScroll: true });
-    }, 50);
 }
 
 function nextStep() {
@@ -136,53 +114,51 @@ function nextStep() {
 }
 
 function finishGame() {
-    document.getElementById('game-play-area').style.display = 'none';
-
+    document.getElementById('game-play-screen').style.display = 'none';
     const durationSeconds = (Date.now() - startTime) / 1000;
     const timePenalty = Math.max(0, (durationSeconds - 300) / 10);
     const finalScore = Math.round(Math.max(0, baseScore - timePenalty));
-    const timeStr =
-        `${Math.floor(durationSeconds / 60).toString().padStart(2, '0')}:` +
-        `${Math.floor(durationSeconds % 60).toString().padStart(2, '0')}`;
 
-    saveHighScore(currentPlayer, finalScore, timeStr);
+    const now = new Date();
+    const dateStr = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}`;
+
+    saveHighScore(currentPlayer, finalScore, dateStr);
 
     document.getElementById('end-screen').innerHTML = `
         <div style="font-weight: bold; margin-top: 20px;">
             <h2 style="border-bottom: 2px solid #000; margin-bottom: 20px; font-size: 32px;">GAME OVER</h2>
             <p style="font-size: 20px;">Correct: ${correctAnswers}/30</p>
-            <p style="font-size: 20px;">Time: ${timeStr}</p>
             <div style="font-size: 36px; border: 4px solid #000; padding: 20px; margin: 20px auto; background:#000; color:#fff; width: fit-content;">
                 SCORE: ${finalScore}
             </div>
         </div>
     `;
-
     updateTableDisplay();
 }
 
-// שמירת שיאים
-function saveHighScore(name, score, duration) {
-    const key = `highScores_${currentLevelName}`;
-    let scores = JSON.parse(localStorage.getItem(key)) || [];
-    scores.push({ name, score, duration });
-    scores.sort((a, b) => b.score - a.score);
-    localStorage.setItem(key, JSON.stringify(scores.slice(0, 10)));
+function saveHighScore(name, score, date) {
+    try {
+        const key = `highScores_${currentLevelName}`;
+        let scores = JSON.parse(localStorage.getItem(key)) || [];
+        scores.push({ name, score, date });
+        scores.sort((a, b) => b.score - a.score);
+        localStorage.setItem(key, JSON.stringify(scores.slice(0, 10)));
+    } catch (e) { console.error("Save failed", e); }
 }
 
 function updateTableDisplay() {
-    const selectedLevel = document.getElementById('levelSelector').value;
-    const key = `highScores_${selectedLevel}`;
-    const scores = JSON.parse(localStorage.getItem(key)) || [];
-    const body = document.getElementById('high-score-body');
-
-    body.innerHTML = scores.map((s, i) => `
-        <tr>
-            <td>#${i + 1}</td>
-            <td><b>${s.name}</b></td>
-            <td>${s.score}</td>
-        </tr>
-    `).join('');
+    try {
+        const level = document.getElementById('levelSelector').value;
+        const scores = JSON.parse(localStorage.getItem(`highScores_${level}`)) || [];
+        document.getElementById('high-score-body').innerHTML = scores.map((s, i) => `
+            <tr>
+                <td>#${i + 1}</td>
+                <td>${s.date || '--/--'}</td>
+                <td style="text-align:left; padding-left:10px;"><b>${s.name}</b></td>
+                <td>${s.score}</td>
+            </tr>
+        `).join('');
+    } catch (e) { console.error("Update failed", e); }
 }
 
 window.onload = updateTableDisplay;
