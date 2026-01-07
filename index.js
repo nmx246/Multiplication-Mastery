@@ -50,7 +50,7 @@ function showExercise() {
             <div class="game-screen-area" id="screenArea">
                 <h2>${current.num1}×${current.num2}</h2>
             </div>
-            <input type="number" id="userGuess" inputmode="decimal" autofocus placeholder="?" autocomplete="off" 
+            <input type="number" id="userGuess" inputmode="numeric" autofocus placeholder="?" autocomplete="off" 
                    style="border: 3px solid #000; font-size: 36px; width: 140px; text-align: center; padding: 10px; font-family: inherit;">
             <button class="action-btn" style="background: #000; color: #fff; margin-top: 25px; width:90%;" id="nextBtn">NEXT ➔</button>
             <p style="font-size: 14px; margin-top: 15px; font-weight:bold;">QUESTION ${currentIndex + 1}/30</p>
@@ -60,12 +60,25 @@ function showExercise() {
 
     const input = document.getElementById('userGuess');
     input.focus();
-    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkAnswer(correctAns); });
-    document.getElementById('nextBtn').addEventListener('click', () => checkAnswer(correctAns));
+
+    // תיקון למעבר שאלה בנייד (Done / Enter)
+    input.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            checkAnswer(correctAns);
+        }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', function (e) {
+        e.preventDefault();
+        checkAnswer(correctAns);
+    });
 }
 
 function checkAnswer(correctAns) {
     const input = document.getElementById('userGuess');
+    if (!input) return;
+
     const val = parseInt(input.value);
     if (isNaN(val)) return;
 
@@ -77,8 +90,11 @@ function checkAnswer(correctAns) {
         baseScore -= 3;
         lastFeedback = `<span style="color:red">Wrong! Answer: ${correctAns}</span>`;
         const screen = document.getElementById('screenArea');
-        screen.classList.add('shake');
-        setTimeout(() => { screen.classList.remove('shake'); nextStep(); }, 400);
+        if (screen) screen.classList.add('shake');
+        setTimeout(() => {
+            if (screen) screen.classList.remove('shake');
+            nextStep();
+        }, 400);
     }
 }
 
@@ -125,9 +141,11 @@ function updateTableDisplay() {
     const key = `highScores_${selectedLevel}`;
     let scores = JSON.parse(localStorage.getItem(key)) || [];
     const body = document.getElementById('high-score-body');
-    body.innerHTML = scores.map((s, i) => `
-        <tr><td>#${i + 1}</td><td><b>${s.name}</b></td><td>${s.score}</td></tr>
-    `).join('');
+    if (body) {
+        body.innerHTML = scores.map((s, i) => `
+            <tr><td>#${i + 1}</td><td><b>${s.name}</b></td><td>${s.score}</td></tr>
+        `).join('');
+    }
 }
 
 window.onload = updateTableDisplay;
