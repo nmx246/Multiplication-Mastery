@@ -5,39 +5,32 @@ let baseScore = 100;
 let startTime;
 let currentLevelName = '';
 let currentPlayer = '';
-let lastFeedback = '';
 
 const positiveWords = ["Correct!", "Good Job!", "Amazing!", "Excellent!", "Awesome!", "Great!"];
 
-// פונקציית ניקוי עם סיסמה
+// פונקציית איפוס
 function secureReset() {
-    const password = prompt("ENTER PASSWORD TO CLEAR SCORES:");
-    if (password === "4327") {
+    if (prompt("ENTER PASSWORD:") === "4327") {
         localStorage.clear();
         location.reload();
-    } else if (password !== null) {
-        alert("WRONG PASSWORD");
     }
 }
 
 function validateAndStart() {
     const nameInput = document.getElementById('playerName');
-    const errorMsg = document.getElementById('nameError');
     if (nameInput.value.trim() === "") {
-        errorMsg.style.display = "block";
+        document.getElementById('nameError').style.display = "block";
         return;
     }
-    errorMsg.style.display = "none";
     currentPlayer = nameInput.value.trim();
     const selectedRadio = document.querySelector('input[name="level"]:checked');
     currentLevelName = selectedRadio.getAttribute('data-name');
-
     document.getElementById('levelSelector').value = currentLevelName;
     startGame(parseInt(selectedRadio.value));
 }
 
 function startGame(choice) {
-    exercises = []; currentIndex = 0; correctAnswers = 0; baseScore = 100; lastFeedback = '';
+    exercises = []; currentIndex = 0; correctAnswers = 0; baseScore = 100;
     for (let i = 0; i < 30; i++) {
         exercises.push({
             num1: Math.floor(Math.random() * choice) + 1,
@@ -45,70 +38,70 @@ function startGame(choice) {
         });
     }
     document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('game-play-area').style.display = 'block';
     document.getElementById('machine-title').innerText = currentLevelName.toUpperCase();
+    document.getElementById('displayPlayerName').innerText = `PLAYER: ${currentPlayer}`;
+    
     startTime = Date.now();
+    setupInputListeners(); // הגדרת המאזינים פעם אחת בלבד
     showExercise();
 }
 
-function showExercise() {
-    const displayArea = document.getElementById('exercise-list');
-    const current = exercises[currentIndex];
-    const correctAns = current.num1 * current.num2;
-
-    displayArea.innerHTML = `
-        <div class="flashcard">
-            <p style="font-weight: bold; font-size:16px; margin-bottom:10px;">PLAYER: ${currentPlayer}</p>
-            <div class="game-screen-area" id="screenArea">
-                <h2>${current.num1}×${current.num2}</h2>
-            </div>
-            <input type="number" id="userGuess" inputmode="numeric" enterkeyhint="next" autofocus placeholder="?" autocomplete="off" 
-                   style="border: 3px solid #000; font-size: 36px; width: 140px; text-align: center; padding: 10px; font-family: inherit;">
-            <button class="action-btn" style="background: #000; color: #fff; margin-top: 25px; width:90%;" id="nextBtn">NEXT ➔</button>
-            <p style="font-size: 14px; margin-top: 15px; font-weight:bold;">QUESTION ${currentIndex + 1}/30</p>
-            <div id="feedbackArea" class="feedback-msg" style="font-size:16px; font-weight:bold; margin-top:10px; min-height:25px;">${lastFeedback}</div>
-        </div>
-    `;
-
+function setupInputListeners() {
     const input = document.getElementById('userGuess');
-    
-    setTimeout(() => {
-        input.focus();
-    }, 50);
+    const nextBtn = document.getElementById('nextBtn');
 
-    input.addEventListener('keydown', function (e) {
+    // מאזין למקלדת - הופך את ה-Done/Enter ל-Next
+    input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
-            checkAnswer(correctAns);
+            handleSubmission();
         }
     });
 
-    document.getElementById('nextBtn').addEventListener('click', function (e) {
+    nextBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        checkAnswer(correctAns);
+        handleSubmission();
     });
 }
 
-function checkAnswer(correctAns) {
+function showExercise() {
+    const current = exercises[currentIndex];
     const input = document.getElementById('userGuess');
-    if (!input) return;
+    
+    document.getElementById('exerciseDisplay').innerText = `${current.num1}×${current.num2}`;
+    document.getElementById('questionCounter').innerText = `QUESTION ${currentIndex + 1}/30`;
+    
+    input.value = '';
+    
+    // החזרת פוקוס כדי שהמקלדת לא תיסגר
+    setTimeout(() => {
+        input.focus();
+    }, 10);
+}
 
+function handleSubmission() {
+    const input = document.getElementById('userGuess');
     const val = parseInt(input.value);
+    const current = exercises[currentIndex];
+    const correctAns = current.num1 * current.num2;
+
     if (isNaN(val)) {
         input.focus();
         return;
     }
 
+    const feedbackArea = document.getElementById('feedbackArea');
     if (val === correctAns) {
         correctAnswers++;
-        lastFeedback = `<span style="color:green">${positiveWords[Math.floor(Math.random() * positiveWords.length)]}</span>`;
+        feedbackArea.innerHTML = `<span style="color:green">${positiveWords[Math.floor(Math.random() * positiveWords.length)]}</span>`;
         nextStep();
     } else {
         baseScore -= 3;
-        lastFeedback = `<span style="color:red">Wrong! Answer: ${correctAns}</span>`;
-        const screen = document.getElementById('screenArea');
-        if (screen) screen.classList.add('shake');
+        feedbackArea.innerHTML = `<span style="color:red">Wrong! Answer: ${correctAns}</span>`;
+        document.getElementById('screenArea').classList.add('shake');
         setTimeout(() => {
-            if (screen) screen.classList.remove('shake');
+            document.getElementById('screenArea').classList.remove('shake');
             nextStep();
         }, 400);
     }
@@ -124,6 +117,7 @@ function nextStep() {
 }
 
 function finishGame() {
+    document.getElementById('game-play-area').style.display = 'none';
     const durationSeconds = (Date.now() - startTime) / 1000;
     const timePenalty = Math.max(0, (durationSeconds - 300) / 10);
     const finalScore = Math.round(Math.max(0, baseScore - timePenalty));
@@ -131,7 +125,7 @@ function finishGame() {
 
     saveHighScore(currentPlayer, finalScore, timeStr);
 
-    document.getElementById('exercise-list').innerHTML = `
+    document.getElementById('end-screen').innerHTML = `
         <div style="font-weight: bold; margin-top: 20px;">
             <h2 style="border-bottom: 2px solid #000; margin-bottom: 20px; font-size: 32px;">GAME OVER</h2>
             <p style="font-size: 20px;">Correct: ${correctAnswers}/30</p>
@@ -144,18 +138,23 @@ function finishGame() {
     updateTableDisplay();
 }
 
+// פונקציית שמירה משופרת לנייד
 function saveHighScore(name, score, duration) {
-    const key = `highScores_${currentLevelName}`;
-    let scores = JSON.parse(localStorage.getItem(key)) || [];
-    scores.push({ name, score, duration });
-    scores.sort((a, b) => b.score - a.score);
-    localStorage.setItem(key, JSON.stringify(scores.slice(0, 10)));
+    try {
+        const key = `highScores_${currentLevelName}`;
+        let scores = JSON.parse(localStorage.getItem(key)) || [];
+        scores.push({ name, score, duration });
+        scores.sort((a, b) => b.score - a.score);
+        localStorage.setItem(key, JSON.stringify(scores.slice(0, 10)));
+    } catch (e) {
+        console.error("Storage error:", e);
+    }
 }
 
 function updateTableDisplay() {
     const selectedLevel = document.getElementById('levelSelector').value;
     const key = `highScores_${selectedLevel}`;
-    let scores = JSON.parse(localStorage.getItem(key)) || [];
+    const scores = JSON.parse(localStorage.getItem(key)) || [];
     const body = document.getElementById('high-score-body');
     if (body) {
         body.innerHTML = scores.map((s, i) => `
