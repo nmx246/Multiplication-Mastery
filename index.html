@@ -42,14 +42,14 @@
                     </div>
                     <div class="spacer-v"></div>
                     <div class="radio-group">
-                        <label class="lvl-option"><input type="radio" name="level" value="10" data-name="Easy"
-                                checked><span class="lvl-label">EASY (1-10)</span></label>
+                        <label class="lvl-option"><input type="radio" name="level" value="10" data-name="Easy"><span
+                                class="lvl-label">EASY (1-10)</span></label>
                         <label class="lvl-option"><input type="radio" name="level" value="20" data-name="Medium"><span
                                 class="lvl-label">MEDIUM (1-20)</span></label>
                         <label class="lvl-option"><input type="radio" name="level" value="50" data-name="Hard"><span
                                 class="lvl-label">HARD (1-50)</span></label>
-                        <label class="lvl-option"><input type="radio" name="level" value="100" data-name="Insane"><span
-                                class="lvl-label">INSANE (1-100)</span></label>
+                        <label class="lvl-option"><input type="radio" name="level" value="100" data-name="Insane"
+                                checked><span class="lvl-label">INSANE (1-100)</span></label>
                     </div>
                     <button class="action-btn ready-btn" onclick="validateAndStart()">I'M READY!</button>
                 </div>
@@ -84,7 +84,7 @@
         <p id="table-title">HALL OF FAME</p>
         <div class="dropdown-wrapper">
             <select id="levelSelector" class="level-dropdown" onchange="updateTableDisplay()">
-                <option value="Insane">INSANE</option>
+                <option value="Insane" selected>INSANE</option>
                 <option value="Hard">HARD</option>
                 <option value="Medium">MEDIUM</option>
                 <option value="Easy">EASY</option>
