@@ -7,27 +7,21 @@ let currentLevelName = '';
 let currentPlayer = '';
 let lastFeedback = '';
 
-// רשימת שבח מגוונת ורנדומלית
-const positiveWords = [
-    "Correct!", "Good Job!", "Amazing!", "Excellent!",
-    "Awesome!", "Great!", "Brilliant!", "Perfect!",
-    "Nice!", "On Fire!", "Unstoppable!", "Superb!",
-    "Fantastic!", "Keep it up!", "Sharp!", "Bravo!"
-];
+const positiveWords = ["Correct!", "Good Job!", "Amazing!", "Excellent!", "Awesome!", "Great!"];
 
 function validateAndStart() {
     const nameInput = document.getElementById('playerName');
     const errorMsg = document.getElementById('nameError');
     if (nameInput.value.trim() === "") {
         errorMsg.style.display = "block";
-        nameInput.style.borderColor = "#ff0000";
         return;
     }
     errorMsg.style.display = "none";
-    nameInput.style.borderColor = "#000";
     currentPlayer = nameInput.value.trim();
     const selectedRadio = document.querySelector('input[name="level"]:checked');
     currentLevelName = selectedRadio.getAttribute('data-name');
+
+    document.getElementById('levelSelector').value = currentLevelName;
     startGame(parseInt(selectedRadio.value));
 }
 
@@ -40,8 +34,7 @@ function startGame(choice) {
         });
     }
     document.getElementById('start-screen').style.display = 'none';
-    document.getElementById('machine-title').innerText = "MODE: " + currentLevelName.toUpperCase();
-    updateTableDisplay();
+    document.getElementById('machine-title').innerText = currentLevelName.toUpperCase();
     startTime = Date.now();
     showExercise();
 }
@@ -53,57 +46,39 @@ function showExercise() {
 
     displayArea.innerHTML = `
         <div class="flashcard">
-            <p style="font-weight: bold; margin-bottom: 5px;">PLAYER: ${currentPlayer}</p>
+            <p style="font-weight: bold; font-size:16px; margin-bottom:10px;">PLAYER: ${currentPlayer}</p>
             <div class="game-screen-area" id="screenArea">
                 <h2>${current.num1}×${current.num2}</h2>
             </div>
-            <input type="tel" id="userGuess" autofocus placeholder="?" autocomplete="off" 
+            <input type="number" id="userGuess" inputmode="decimal" autofocus placeholder="?" autocomplete="off" 
                    style="border: 3px solid #000; font-size: 36px; width: 140px; text-align: center; padding: 10px; font-family: inherit;">
-            
-            <button class="action-btn next-btn-styled" id="nextBtn">NEXT ➔</button>
-            
-            <p style="font-size: 14px; margin-top: 10px;">QUESTION ${currentIndex + 1}/30</p>
-            <div id="feedbackArea" class="feedback-msg">${lastFeedback}</div>
+            <button class="action-btn" style="background: #000; color: #fff; margin-top: 25px; width:90%;" id="nextBtn">NEXT ➔</button>
+            <p style="font-size: 14px; margin-top: 15px; font-weight:bold;">QUESTION ${currentIndex + 1}/30</p>
+            <div id="feedbackArea" class="feedback-msg" style="font-size:16px; font-weight:bold; margin-top:10px; min-height:25px;">${lastFeedback}</div>
         </div>
     `;
 
     const input = document.getElementById('userGuess');
-    const nextBtn = document.getElementById('nextBtn');
     input.focus();
-
-    input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') checkAnswer(correctAns);
-    });
-
-    nextBtn.addEventListener('click', () => {
-        checkAnswer(correctAns);
-    });
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkAnswer(correctAns); });
+    document.getElementById('nextBtn').addEventListener('click', () => checkAnswer(correctAns));
 }
 
 function checkAnswer(correctAns) {
     const input = document.getElementById('userGuess');
-    const screen = document.getElementById('screenArea');
     const val = parseInt(input.value);
-
     if (isNaN(val)) return;
 
     if (val === correctAns) {
         correctAnswers++;
-        const word = positiveWords[Math.floor(Math.random() * positiveWords.length)];
-        lastFeedback = `<span class="feedback-success">${word}</span>`;
+        lastFeedback = `<span style="color:green">${positiveWords[Math.floor(Math.random() * positiveWords.length)]}</span>`;
         nextStep();
     } else {
         baseScore -= 3;
-        // ניסוח אנגלי תקני וחד
-        lastFeedback = `<span class="feedback-error">Incorrect! Correct: ${correctAns}</span>`;
-
-        screen.classList.remove('shake');
-        void screen.offsetWidth;
+        lastFeedback = `<span style="color:red">Wrong! Answer: ${correctAns}</span>`;
+        const screen = document.getElementById('screenArea');
         screen.classList.add('shake');
-
-        setTimeout(() => {
-            nextStep();
-        }, 300);
+        setTimeout(() => { screen.classList.remove('shake'); nextStep(); }, 400);
     }
 }
 
@@ -117,55 +92,45 @@ function nextStep() {
 }
 
 function finishGame() {
-    const now = new Date();
-    const dateStr = now.toISOString().split('T')[0];
     const durationSeconds = (Date.now() - startTime) / 1000;
     const timePenalty = Math.max(0, (durationSeconds - 300) / 10);
     const finalScore = Math.round(Math.max(0, baseScore - timePenalty));
-    const minutes = Math.floor(durationSeconds / 60);
-    const seconds = Math.floor(durationSeconds % 60);
-    const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    const successRate = ((correctAnswers / 30) * 100).toFixed(2);
+    const timeStr = `${Math.floor(durationSeconds / 60).toString().padStart(2, '0')}:${Math.floor(durationSeconds % 60).toString().padStart(2, '0')}`;
 
-    saveHighScore(currentPlayer, finalScore, formattedTime, successRate, correctAnswers);
+    saveHighScore(currentPlayer, finalScore, timeStr);
 
     document.getElementById('exercise-list').innerHTML = `
-        <div style="text-align: center; line-height: 1.6; font-weight: bold; margin-top: -20px;">
-            <h2 style="border-bottom: 2px solid #000; display: inline-block; padding-bottom: 5px; margin-bottom: 20px;">GAME OVER</h2>
-            <div style="font-size: 14px; text-align: center; display: inline-block;">
-                <p>Date: ${dateStr}</p>
-                <p>Level: ${currentLevelName}</p>
-                <p>Correct Answers: ${correctAnswers}/30</p>
-                <p>Success Rate: ${successRate}%</p>
-                <p>Duration: ${formattedTime}</p>
-                <p style="font-size: 24px; margin-top: 15px; border: 2px solid #000; padding: 10px;">SCORE: ${finalScore}</p>
+        <div style="font-weight: bold; margin-top: 20px;">
+            <h2 style="border-bottom: 2px solid #000; margin-bottom: 20px; font-size: 32px;">GAME OVER</h2>
+            <p style="font-size: 20px;">Correct: ${correctAnswers}/30</p>
+            <p style="font-size: 20px;">Time: ${timeStr}</p>
+            <div style="font-size: 36px; border: 4px solid #000; padding: 20px; margin: 20px auto; background:#000; color:#fff; width: fit-content;">
+                SCORE: ${finalScore}
             </div>
         </div>
     `;
     updateTableDisplay();
 }
 
-function saveHighScore(name, score, duration, rate, correct) {
+function saveHighScore(name, score, duration) {
     const key = `highScores_${currentLevelName}`;
     let scores = JSON.parse(localStorage.getItem(key)) || [];
-    scores.push({ name, score, duration, rate, correct });
+    scores.push({ name, score, duration });
     scores.sort((a, b) => b.score - a.score);
     localStorage.setItem(key, JSON.stringify(scores.slice(0, 10)));
 }
 
 function updateTableDisplay() {
-    if (!currentLevelName) return;
-    const key = `highScores_${currentLevelName}`;
+    const selectedLevel = document.getElementById('levelSelector').value;
+    const key = `highScores_${selectedLevel}`;
     let scores = JSON.parse(localStorage.getItem(key)) || [];
     const body = document.getElementById('high-score-body');
-    document.getElementById('table-title').innerText = `HALL OF FAME - ${currentLevelName.toUpperCase()}`;
     body.innerHTML = scores.map((s, i) => `
-        <tr><td>#${i + 1}</td><td><b>${s.name}</b></td><td>${s.score}</td><td>${s.duration}</td><td>${s.correct}/30</td><td>${s.rate}%</td></tr>
+        <tr><td>#${i + 1}</td><td><b>${s.name}</b></td><td>${s.score}</td></tr>
     `).join('');
 }
 
-
-
+window.onload = updateTableDisplay;
 
 // לניקוי הטבלה, מחק את ה-// מהשורה הבאה ושמור:
 // localStorage.clear(); location.reload();
