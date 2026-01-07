@@ -8,7 +8,7 @@ let currentPlayer = '';
 
 const positiveWords = ["Correct!", "Good Job!", "Amazing!", "Excellent!", "Awesome!", "Great!"];
 
-// פונקציית איפוס
+// איפוס מאובטח
 function secureReset() {
     if (prompt("ENTER PASSWORD:") === "4327") {
         localStorage.clear();
@@ -30,20 +30,25 @@ function validateAndStart() {
 }
 
 function startGame(choice) {
-    exercises = []; currentIndex = 0; correctAnswers = 0; baseScore = 100;
+    exercises = [];
+    currentIndex = 0;
+    correctAnswers = 0;
+    baseScore = 100;
+
     for (let i = 0; i < 30; i++) {
         exercises.push({
             num1: Math.floor(Math.random() * choice) + 1,
             num2: Math.floor(Math.random() * choice) + 1
         });
     }
+
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('game-play-area').style.display = 'block';
     document.getElementById('machine-title').innerText = currentLevelName.toUpperCase();
     document.getElementById('displayPlayerName').innerText = `PLAYER: ${currentPlayer}`;
-    
+
     startTime = Date.now();
-    setupInputListeners(); // הגדרת המאזינים פעם אחת בלבד
+    setupInputListeners();
     showExercise();
 }
 
@@ -51,15 +56,22 @@ function setupInputListeners() {
     const input = document.getElementById('userGuess');
     const nextBtn = document.getElementById('nextBtn');
 
-    // מאזין למקלדת - הופך את ה-Done/Enter ל-Next
-    input.addEventListener('keydown', function(e) {
+    // ENTER במחשב
+    input.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
             e.preventDefault();
             handleSubmission();
         }
     });
 
-    nextBtn.addEventListener('click', function(e) {
+    // DONE במובייל (איבוד פוקוס)
+    input.addEventListener('blur', function () {
+        if (input.value !== '') {
+            handleSubmission();
+        }
+    });
+
+    nextBtn.addEventListener('click', function (e) {
         e.preventDefault();
         handleSubmission();
     });
@@ -68,16 +80,16 @@ function setupInputListeners() {
 function showExercise() {
     const current = exercises[currentIndex];
     const input = document.getElementById('userGuess');
-    
+
     document.getElementById('exerciseDisplay').innerText = `${current.num1}×${current.num2}`;
     document.getElementById('questionCounter').innerText = `QUESTION ${currentIndex + 1}/30`;
-    
+
     input.value = '';
-    
-    // החזרת פוקוס כדי שהמקלדת לא תיסגר
+
+    // החזרת פוקוס – חשוב למובייל
     setTimeout(() => {
-        input.focus();
-    }, 10);
+        input.focus({ preventScroll: true });
+    }, 50);
 }
 
 function handleSubmission() {
@@ -92,6 +104,7 @@ function handleSubmission() {
     }
 
     const feedbackArea = document.getElementById('feedbackArea');
+
     if (val === correctAns) {
         correctAnswers++;
         feedbackArea.innerHTML = `<span style="color:green">${positiveWords[Math.floor(Math.random() * positiveWords.length)]}</span>`;
@@ -100,11 +113,17 @@ function handleSubmission() {
         baseScore -= 3;
         feedbackArea.innerHTML = `<span style="color:red">Wrong! Answer: ${correctAns}</span>`;
         document.getElementById('screenArea').classList.add('shake');
+
         setTimeout(() => {
             document.getElementById('screenArea').classList.remove('shake');
             nextStep();
         }, 400);
     }
+
+    // להשאיר את המקלדת פתוחה
+    setTimeout(() => {
+        input.focus({ preventScroll: true });
+    }, 50);
 }
 
 function nextStep() {
@@ -118,10 +137,13 @@ function nextStep() {
 
 function finishGame() {
     document.getElementById('game-play-area').style.display = 'none';
+
     const durationSeconds = (Date.now() - startTime) / 1000;
     const timePenalty = Math.max(0, (durationSeconds - 300) / 10);
     const finalScore = Math.round(Math.max(0, baseScore - timePenalty));
-    const timeStr = `${Math.floor(durationSeconds / 60).toString().padStart(2, '0')}:${Math.floor(durationSeconds % 60).toString().padStart(2, '0')}`;
+    const timeStr =
+        `${Math.floor(durationSeconds / 60).toString().padStart(2, '0')}:` +
+        `${Math.floor(durationSeconds % 60).toString().padStart(2, '0')}`;
 
     saveHighScore(currentPlayer, finalScore, timeStr);
 
@@ -135,20 +157,17 @@ function finishGame() {
             </div>
         </div>
     `;
+
     updateTableDisplay();
 }
 
-// פונקציית שמירה משופרת לנייד
+// שמירת שיאים
 function saveHighScore(name, score, duration) {
-    try {
-        const key = `highScores_${currentLevelName}`;
-        let scores = JSON.parse(localStorage.getItem(key)) || [];
-        scores.push({ name, score, duration });
-        scores.sort((a, b) => b.score - a.score);
-        localStorage.setItem(key, JSON.stringify(scores.slice(0, 10)));
-    } catch (e) {
-        console.error("Storage error:", e);
-    }
+    const key = `highScores_${currentLevelName}`;
+    let scores = JSON.parse(localStorage.getItem(key)) || [];
+    scores.push({ name, score, duration });
+    scores.sort((a, b) => b.score - a.score);
+    localStorage.setItem(key, JSON.stringify(scores.slice(0, 10)));
 }
 
 function updateTableDisplay() {
@@ -156,11 +175,14 @@ function updateTableDisplay() {
     const key = `highScores_${selectedLevel}`;
     const scores = JSON.parse(localStorage.getItem(key)) || [];
     const body = document.getElementById('high-score-body');
-    if (body) {
-        body.innerHTML = scores.map((s, i) => `
-            <tr><td>#${i + 1}</td><td><b>${s.name}</b></td><td>${s.score}</td></tr>
-        `).join('');
-    }
+
+    body.innerHTML = scores.map((s, i) => `
+        <tr>
+            <td>#${i + 1}</td>
+            <td><b>${s.name}</b></td>
+            <td>${s.score}</td>
+        </tr>
+    `).join('');
 }
 
 window.onload = updateTableDisplay;
