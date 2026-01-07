@@ -128,19 +128,20 @@ function finishGame() {
     const timeStr = formatTime(durationMs);
 
     const now = new Date();
-    const dateStr = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}`;
+    // פורמט תאריך מלא DD/MM/YYYY
+    const dateStr = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()}`;
 
     saveHighScore(currentPlayer, finalScore, dateStr);
 
     document.getElementById('end-screen').innerHTML = `
         <div style="font-weight: bold; margin-top: 20px; line-height: 1.6;">
             <h2 style="border-bottom: 2px solid #000; margin-bottom: 20px; font-size: 32px;">GAME OVER</h2>
-            <div style="text-align: left; display: inline-block; font-size: 18px;">
+            <div style="text-align: left; display: inline-block; font-size: 18px; background: #eee; padding: 15px; border-radius: 10px; border: 2px solid #000;">
                 <p>CORRECT ANSWERS: ${correctAnswers}/30</p>
                 <p>SUCCESS RATE: ${successRate}%</p>
                 <p>DURATION: ${timeStr}</p>
             </div>
-            <div style="font-size: 36px; border: 4px solid #000; padding: 20px; margin: 25px auto; background:#000; color:#fff; width: fit-content;">
+            <div style="font-size: 36px; border: 4px solid #000; padding: 20px; margin: 25px auto; background:#000; color:#fff; width: fit-content; text-shadow: 0 0 5px #fff;">
                 SCORE: ${finalScore}
             </div>
         </div>
@@ -165,9 +166,9 @@ function updateTableDisplay() {
         document.getElementById('high-score-body').innerHTML = scores.map((s, i) => `
             <tr>
                 <td>#${i + 1}</td>
-                <td>${s.date || '--/--'}</td>
+                <td>${s.date}</td>
                 <td><b>${s.name}</b></td>
-                <td>${s.score}</td>
+                <td style="font-weight: 900;">${s.score}</td>
             </tr>
         `).join('');
     } catch (e) { console.error("Update failed", e); }
