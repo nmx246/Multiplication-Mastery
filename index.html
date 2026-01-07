@@ -40,26 +40,27 @@
                     </div>
                     <div class="spacer-v"></div>
                     <div class="radio-group">
-                        <label class="lvl-option">
-                            <input type="radio" name="level" value="10" data-name="Easy" checked>
-                            <span class="lvl-label">EASY (1-10)</span>
-                        </label>
-                        <label class="lvl-option">
-                            <input type="radio" name="level" value="20" data-name="Medium">
-                            <span class="lvl-label">MEDIUM (1-20)</span>
-                        </label>
-                        <label class="lvl-option">
-                            <input type="radio" name="level" value="50" data-name="Hard">
-                            <span class="lvl-label">HARD (1-50)</span>
-                        </label>
-                        <label class="lvl-option">
-                            <input type="radio" name="level" value="100" data-name="Insane">
-                            <span class="lvl-label">INSANE (1-100)</span>
-                        </label>
+                        <label class="lvl-option"><input type="radio" name="level" value="10" data-name="Easy" checked><span class="lvl-label">EASY (1-10)</span></label>
+                        <label class="lvl-option"><input type="radio" name="level" value="20" data-name="Medium"><span class="lvl-label">MEDIUM (1-20)</span></label>
+                        <label class="lvl-option"><input type="radio" name="level" value="50" data-name="Hard"><span class="lvl-label">HARD (1-50)</span></label>
+                        <label class="lvl-option"><input type="radio" name="level" value="100" data-name="Insane"><span class="lvl-label">INSANE (1-100)</span></label>
                     </div>
                     <button class="action-btn ready-btn" onclick="validateAndStart()">I'M READY!</button>
                 </div>
-                <div id="exercise-list"></div>
+
+                <div id="game-play-area" style="display: none;">
+                    <p id="displayPlayerName" style="font-weight: bold; font-size:16px; margin-bottom:10px;"></p>
+                    <div class="game-screen-area" id="screenArea">
+                        <h2 id="exerciseDisplay"></h2>
+                    </div>
+                    <input type="number" id="userGuess" inputmode="numeric" enterkeyhint="next" placeholder="?" autocomplete="off" 
+                           style="border: 3px solid #000; font-size: 36px; width: 140px; text-align: center; padding: 10px; font-family: inherit;">
+                    <button class="action-btn" style="background: #000; color: #fff; margin-top: 25px; width:90%;" id="nextBtn">NEXT ➔</button>
+                    <p id="questionCounter" style="font-size: 14px; margin-top: 15px; font-weight:bold;"></p>
+                    <div id="feedbackArea" class="feedback-msg" style="font-size:16px; font-weight:bold; margin-top:10px; min-height:25px;"></div>
+                </div>
+
+                <div id="end-screen"></div>
             </div>
 
             <div class="bottom-controls">
@@ -88,7 +89,6 @@
             </thead>
             <tbody id="high-score-body"></tbody>
         </table>
-        
         <button class="clean-btn" onclick="secureReset()">CLEAN SCORES</button>
     </div>
 
