@@ -9,6 +9,17 @@ let lastFeedback = '';
 
 const positiveWords = ["Correct!", "Good Job!", "Amazing!", "Excellent!", "Awesome!", "Great!"];
 
+// פונקציית ניקוי עם סיסמה
+function secureReset() {
+    const password = prompt("ENTER PASSWORD TO CLEAR SCORES:");
+    if (password === "4327") {
+        localStorage.clear();
+        location.reload();
+    } else if (password !== null) {
+        alert("WRONG PASSWORD");
+    }
+}
+
 function validateAndStart() {
     const nameInput = document.getElementById('playerName');
     const errorMsg = document.getElementById('nameError');
@@ -50,7 +61,7 @@ function showExercise() {
             <div class="game-screen-area" id="screenArea">
                 <h2>${current.num1}×${current.num2}</h2>
             </div>
-            <input type="number" id="userGuess" inputmode="numeric" autofocus placeholder="?" autocomplete="off" 
+            <input type="number" id="userGuess" inputmode="numeric" enterkeyhint="next" autofocus placeholder="?" autocomplete="off" 
                    style="border: 3px solid #000; font-size: 36px; width: 140px; text-align: center; padding: 10px; font-family: inherit;">
             <button class="action-btn" style="background: #000; color: #fff; margin-top: 25px; width:90%;" id="nextBtn">NEXT ➔</button>
             <p style="font-size: 14px; margin-top: 15px; font-weight:bold;">QUESTION ${currentIndex + 1}/30</p>
@@ -59,10 +70,12 @@ function showExercise() {
     `;
 
     const input = document.getElementById('userGuess');
-    input.focus();
+    
+    setTimeout(() => {
+        input.focus();
+    }, 50);
 
-    // תיקון למעבר שאלה בנייד (Done / Enter)
-    input.addEventListener('keypress', function (e) {
+    input.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
             e.preventDefault();
             checkAnswer(correctAns);
@@ -80,7 +93,10 @@ function checkAnswer(correctAns) {
     if (!input) return;
 
     const val = parseInt(input.value);
-    if (isNaN(val)) return;
+    if (isNaN(val)) {
+        input.focus();
+        return;
+    }
 
     if (val === correctAns) {
         correctAnswers++;
@@ -149,6 +165,3 @@ function updateTableDisplay() {
 }
 
 window.onload = updateTableDisplay;
-
-// לניקוי הטבלה, מחק את ה-// מהשורה הבאה ושמור:
-// localStorage.clear(); location.reload();
