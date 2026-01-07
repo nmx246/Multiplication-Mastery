@@ -5,7 +5,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 40px 20px;
+    padding: 60px 20px;
     margin: 0;
     overflow-x: hidden;
 }
@@ -14,7 +14,7 @@ body {
     font-size: 70px;
     letter-spacing: 12px;
     line-height: 1.1;
-    margin-bottom: 40px;
+    margin-bottom: 60px;
     text-align: center;
     text-transform: uppercase;
     color: #fff;
@@ -23,64 +23,318 @@ body {
     flex-direction: column;
 }
 
-.rules-box, .arcade-machine, .scoreboard-container {
+.rules-box,
+.arcade-machine,
+.scoreboard-container {
     width: 100%;
-    max-width: 550px; 
+    max-width: 550px;
     box-sizing: border-box;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
-.rules-box { border: 3px solid #fff; border-radius: 15px; padding: 25px; }
-.rules-title { font-weight: bold; text-align: center; font-size: 22px; margin-bottom: 20px; }
-.rules-content p, .rules-content li { font-size: 17px; margin: 10px 0; }
-.penalty-text { color: #ff4444; font-weight: bold; font-size: 14px; margin: 8px 0; }
+.rules-box {
+    border: 3px solid #fff;
+    border-radius: 15px;
+    padding: 25px;
+}
 
-.arcade-machine { border: 2px solid #fff; border-radius: 40px; padding: 10px; }
+.rules-title {
+    font-weight: bold;
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.rules-content p,
+.rules-content li {
+    font-size: 17px;
+    margin: 10px 0;
+}
+
+.penalty-text {
+    color: #ff4444;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+.spacer-v {
+    height: 30px;
+}
+
+.arcade-machine {
+    border: 2px solid #fff;
+    border-radius: 40px;
+    padding: 10px;
+}
+
 .arcade-border {
     background-color: #fff;
     color: #000;
     border: 8px double #000;
     border-radius: 30px;
-    padding: 30px 20px;
+    padding: 35px;
     text-align: center;
-    min-height: 520px;
+    min-height: 550px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-#playerName { width: 90%; padding: 12px; border: 2px solid #000; font-family: inherit; text-align: center; font-size: 18px; margin: 0 auto; display: block; }
-.error-msg { color: #ff0000; font-size: 12px; font-weight: bold; margin-top: 10px; display: none; }
-
-.radio-group { display: flex; flex-direction: column; gap: 8px; width: 90%; margin: 0 auto; }
-.lvl-label { display: block; padding: 12px; border: 2px solid #000; font-weight: bold; cursor: pointer; }
-.lvl-option input { position: absolute; opacity: 0; }
-.lvl-option input:checked+.lvl-label { background: #000; color: #fff; }
-
-.action-btn { width: 90%; margin: 0 auto; padding: 16px; border: 3px solid #000; font-family: inherit; font-weight: 900; background: #fff; color: #000; cursor: pointer; text-transform: uppercase; font-size: 18px; }
-.ready-btn { margin-top: 30px; }
-.bottom-controls { margin-top: 40px; }
-
-.game-screen-area { background: #000; color: #fff; border-radius: 20px; padding: 40px; margin: 20px 0; display: flex; justify-content: center; align-items: center; }
-.game-screen-area h2 { font-size: 60px; margin: 0; text-align: center; width: 100%; }
-
-.scoreboard-container { background: #fff; color: #000; border: 8px double #000; border-radius: 25px; padding: 25px; text-align: center; }
-.level-dropdown { width: 150px; padding: 8px; font-family: inherit; border: 2px solid #000; text-align-last: center; }
-
-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-th { border-bottom: 3px solid #000; padding: 12px; background: #eee; }
-td { padding: 12px; border-bottom: 1px solid #ddd; text-align: center; font-size: 18px; }
-
-.clean-btn { background: none; border: 1px solid #ccc; color: #999; font-size: 10px; padding: 5px; cursor: pointer; margin-top: 10px; }
-
-@media (max-width: 600px) {
-    .main-page-title { font-size: 32px; letter-spacing: 6px; }
-    .game-screen-area h2 { font-size: 45px; }
+#start-screen {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
-.shake { animation: shakeAnim 0.4s both; }
+.ready-btn {
+    margin-top: 50px !important;
+    margin-bottom: 20px;
+}
+
+.bottom-controls {
+    margin-top: 40px;
+    border-top: 2px solid #eee;
+    padding-top: 20px;
+}
+
+#playerName {
+    width: 90%;
+    padding: 12px;
+    border: 2px solid #000;
+    font-family: inherit;
+    text-align: center;
+    font-size: 18px;
+    margin: 0 auto;
+    display: block;
+}
+
+.error-msg {
+    color: #ff0000;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 10px;
+    display: none;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.lvl-label {
+    display: block;
+    padding: 12px;
+    border: 2px solid #000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.lvl-option input {
+    position: absolute;
+    opacity: 0;
+}
+
+.lvl-option input:checked+.lvl-label {
+    background: #000;
+    color: #fff;
+}
+
+.action-btn {
+    width: 90%;
+    margin: 0 auto;
+    padding: 16px;
+    border: 3px solid #000;
+    font-family: inherit;
+    font-weight: 900;
+    background: #fff;
+    color: #000;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 18px;
+}
+
+.game-screen-area {
+    background: #000;
+    color: #fff;
+    border-radius: 20px;
+    padding: 40px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-screen-area h2 {
+    font-size: 60px;
+    margin: 0;
+}
+
+.scoreboard-container {
+    background: #fff;
+    color: #000;
+    border: 8px double #000;
+    border-radius: 25px;
+    padding: 25px;
+    text-align: center;
+}
+
+#table-title {
+    font-weight: 900;
+    font-size: 26px;
+    margin-bottom: 15px;
+}
+
+.dropdown-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.level-dropdown {
+    width: 150px;
+    padding: 8px;
+    font-family: inherit;
+    font-weight: bold;
+    border: 2px solid #000;
+    text-align-last: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+th {
+    border-bottom: 3px solid #000;
+    padding: 8px 2px;
+    background: #eee;
+    font-size: 14px;
+    text-align: center;
+}
+
+td {
+    padding: 10px 2px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.clean-btn {
+    margin-top: 30px;
+    background: none;
+    border: 1px solid #ccc;
+    color: #888;
+    font-family: inherit;
+    font-size: 11px;
+    padding: 6px 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 4px;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    color: #000;
+    padding: 30px;
+    border: 5px double #000;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 90%;
+    width: 400px;
+}
+
+.modal-content p {
+    font-weight: 900;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 12px 30px;
+    font-family: inherit;
+    font-weight: 900;
+    cursor: pointer;
+    border: 3px solid #000;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.modal-btn.yes {
+    background: #000;
+    color: #fff;
+}
+
+.modal-btn.no {
+    background: #fff;
+    color: #000;
+}
+
+@media (max-width: 600px) {
+    .main-page-title {
+        font-size: 32px;
+        letter-spacing: 6px;
+    }
+
+    .game-screen-area h2 {
+        font-size: 45px;
+    }
+
+    .arcade-border {
+        min-height: 600px;
+    }
+
+    td,
+    th {
+        font-size: 12px;
+    }
+}
+
+.shake {
+    animation: shakeAnim 0.4s both;
+}
+
 @keyframes shakeAnim {
-    10%, 90% { transform: translate3d(-1px, 0, 0); }
-    30%, 70% { transform: translate3d(-4px, 0, 0); }
-    40%, 60% { transform: translate3d(4px, 0, 0); }
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    30%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
 }
