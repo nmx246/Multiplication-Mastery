@@ -40,28 +40,17 @@
                         <input type="text" id="playerName" placeholder="ENTER YOUR NAME" maxlength="12">
                         <div id="nameError" class="error-msg">PLEASE ENTER YOUR NAME TO START</div>
                     </div>
-
                     <div class="spacer-v"></div>
-
                     <div class="radio-group">
-                        <label class="lvl-option">
-                            <input type="radio" name="level" value="10" data-name="Easy" checked>
-                            <span class="lvl-label">EASY (1-10)</span>
-                        </label>
-                        <label class="lvl-option">
-                            <input type="radio" name="level" value="20" data-name="Medium">
-                            <span class="lvl-label">MEDIUM (1-20)</span>
-                        </label>
-                        <label class="lvl-option">
-                            <input type="radio" name="level" value="50" data-name="Hard">
-                            <span class="lvl-label">HARD (1-50)</span>
-                        </label>
-                        <label class="lvl-option">
-                            <input type="radio" name="level" value="100" data-name="Insane">
-                            <span class="lvl-label">INSANE (1-100)</span>
-                        </label>
+                        <label class="lvl-option"><input type="radio" name="level" value="10" data-name="Easy"
+                                checked><span class="lvl-label">EASY (1-10)</span></label>
+                        <label class="lvl-option"><input type="radio" name="level" value="20" data-name="Medium"><span
+                                class="lvl-label">MEDIUM (1-20)</span></label>
+                        <label class="lvl-option"><input type="radio" name="level" value="50" data-name="Hard"><span
+                                class="lvl-label">HARD (1-50)</span></label>
+                        <label class="lvl-option"><input type="radio" name="level" value="100" data-name="Insane"><span
+                                class="lvl-label">INSANE (1-100)</span></label>
                     </div>
-
                     <button class="action-btn ready-btn" onclick="validateAndStart()">I'M READY!</button>
                 </div>
                 <div id="exercise-list"></div>
