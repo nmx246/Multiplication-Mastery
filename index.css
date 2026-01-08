@@ -74,13 +74,11 @@ body {
     border: 8px double #000;
     border-radius: 30px;
     padding: 20px 35px 35px 35px;
-    /* Reduced top padding to move exercise up */
     text-align: center;
     min-height: 550px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    /* Changed to flex-start to keep content upper */
 }
 
 #start-screen {
@@ -140,7 +138,7 @@ body {
     color: #fff;
 }
 
-/* --- ACTION BUTTONS (READY, NEXT, RESTART) --- */
+/* --- ACTION BUTTONS --- */
 .action-btn {
     width: 90%;
     margin: 25px auto 0;
@@ -166,6 +164,7 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
+/* Base Neon Effect for ALL action-btns */
 .action-btn::before {
     content: '';
     position: absolute;
@@ -189,15 +188,10 @@ body {
     z-index: -1;
 }
 
-.finish-btn {
-    background: #fff;
-    color: #000;
-    border-color: #000;
-}
-
+/* Overrides for show-score (Finish) to match visual style but stay black/white */
 .finish-btn::after {
-    background: #fff;
-    color: #000;
+    background: #000 !important;
+    color: #fff !important;
 }
 
 .action-btn:active,
@@ -212,13 +206,19 @@ body {
     display: block;
 }
 
+.top-counter {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
 .game-screen-area {
     background: #000;
     color: #fff;
     border-radius: 20px;
     padding: 40px;
-    margin: 5px 0 10px 0;
-    /* Minimal top margin to keep it high */
+    margin: 0 0 10px 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -336,7 +336,6 @@ body {
 .player-info-footer p {
     font-weight: bold;
     font-size: 18px;
-    /* Increased as requested */
     margin: 5px 0;
     text-transform: uppercase;
 }
@@ -351,32 +350,19 @@ body {
     text-align: center;
 }
 
-#table-title {
-    font-weight: 900;
-    font-size: 26px;
-    margin-bottom: 20px;
-}
-
-.dropdown-wrapper {
-    margin-bottom: 30px;
-}
-
-.level-dropdown {
-    width: 160px;
-    padding: 10px;
-    font-family: inherit;
-    font-weight: bold;
-    border: 3px solid #000;
-    text-align-last: center;
-    background: #fff;
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    /* Allows horizontal scrolling on small screens */
+    margin: 0 auto;
+    border: 2px solid #000;
 }
 
 table {
     width: 100%;
+    min-width: 400px;
+    /* Ensures columns have enough space to not wrap date */
     border-collapse: collapse;
-    table-layout: fixed;
-    margin: 0 auto;
-    border: 2px solid #000;
 }
 
 th {
@@ -393,24 +379,6 @@ td {
     font-size: 14px;
     text-align: center;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.col-rank {
-    width: 15%;
-}
-
-.col-date {
-    width: 30%;
-}
-
-.col-name {
-    width: 35%;
-}
-
-.col-score {
-    width: 20%;
 }
 
 .footer-spacer {
@@ -427,11 +395,6 @@ td {
     cursor: pointer;
     text-transform: uppercase;
     border-radius: 4px;
-}
-
-.clean-btn:hover {
-    color: #000;
-    border-color: #000;
 }
 
 .modal-overlay {
@@ -481,31 +444,15 @@ td {
         font-size: 45px;
     }
 
-    .numpad {
-        width: 100% !important;
-        gap: 8px;
-        margin: 10px auto;
-    }
-
-    .numpad-row {
-        gap: 5px;
-        width: 100%;
-    }
-
     .num-btn {
         height: 75px;
         font-size: 30px;
-        border-radius: 10px;
-        flex: 1;
         border-bottom-width: 6px;
     }
 
     .action-btn {
-        width: 100% !important;
         height: 85px !important;
         font-size: 26px !important;
-        margin: 10px 0 0 0 !important;
-        border-radius: 12px !important;
         border-bottom-width: 8px !important;
     }
 
