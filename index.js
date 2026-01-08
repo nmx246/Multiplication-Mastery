@@ -113,7 +113,7 @@ function showExercise() {
     const input = document.getElementById('userGuess');
     input.value = '';
     input.disabled = false;
-    
+
     if (!('ontouchstart' in window)) {
         setTimeout(() => { input.focus(); }, 10);
     }
