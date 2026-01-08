@@ -64,6 +64,29 @@
                             autocomplete="off"
                             style="border: 3px solid #000; font-size: 36px; width: 140px; text-align: center; padding: 10px; font-family: inherit;">
 
+                        <div id="numpad" class="numpad">
+                            <div class="numpad-row">
+                                <button class="num-btn" onclick="typeNum(1)">1</button>
+                                <button class="num-btn" onclick="typeNum(2)">2</button>
+                                <button class="num-btn" onclick="typeNum(3)">3</button>
+                            </div>
+                            <div class="numpad-row">
+                                <button class="num-btn" onclick="typeNum(4)">4</button>
+                                <button class="num-btn" onclick="typeNum(5)">5</button>
+                                <button class="num-btn" onclick="typeNum(6)">6</button>
+                            </div>
+                            <div class="numpad-row">
+                                <button class="num-btn" onclick="typeNum(7)">7</button>
+                                <button class="num-btn" onclick="typeNum(8)">8</button>
+                                <button class="num-btn" onclick="typeNum(9)">9</button>
+                            </div>
+                            <div class="numpad-row">
+                                <button class="num-btn del-btn" onclick="typeNum('del')">⌫</button>
+                                <button class="num-btn" onclick="typeNum(0)">0</button>
+                                <button class="num-btn clear-btn" onclick="typeNum('clear')">C</button>
+                            </div>
+                        </div>
+
                         <button class="action-btn next-btn" id="nextBtn" onclick="checkAnswer()">NEXT ➔</button>
                         <button class="action-btn finish-btn" id="finishBtn" onclick="finishGame()"
                             style="display:none;">SHOW MY SCORE</button>
