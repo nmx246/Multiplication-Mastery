@@ -15,13 +15,16 @@ function initButtonEffects() {
         if (!btn.getAttribute('data-label')) {
             btn.setAttribute('data-label', btn.innerText);
         }
+
         btn.addEventListener('touchstart', () => {
             btn.classList.add('is-active');
             if (window.navigator.vibrate) window.navigator.vibrate(10);
         }, { passive: true });
+
         btn.addEventListener('touchend', () => {
             btn.classList.remove('is-active');
         }, { passive: true });
+
         btn.addEventListener('touchcancel', () => {
             btn.classList.remove('is-active');
         }, { passive: true });
@@ -62,21 +65,12 @@ function startGame(choice) {
             num2: Math.floor(Math.random() * choice) + 1
         });
     }
-
-    // הוספת קלאס לגוף הדף להסתרת שאר התוכן
-    document.body.classList.add('game-active');
-
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('game-play-screen').style.display = 'block';
-    document.getElementById('machine-title').innerText = currentLevelName.toUpperCase();
-    document.getElementById('displayCurrentPlayer').innerText = `PLAYER: ${currentPlayer}`;
 
-    // גלילה לראש הדף מיד אחרי ההסתרה
-    setTimeout(() => {
-        window.scrollTo(0, 0);
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-    }, 10);
+    document.getElementById('machine-title').innerText = "";
+    document.getElementById('displayCurrentPlayer').innerText = `PLAYER: ${currentPlayer}`;
+    document.getElementById('displayCurrentLevel').innerText = `LEVEL: ${currentLevelName.toUpperCase()}`;
 
     startTime = Date.now();
     setupInputListeners();
@@ -106,9 +100,6 @@ function typeNum(val) {
             input.value += val;
         }
     }
-    if (!('ontouchstart' in window)) {
-        input.focus();
-    }
 }
 
 function showExercise() {
@@ -129,10 +120,10 @@ function showExercise() {
 function checkAnswer() {
     const input = document.getElementById('userGuess');
     const val = parseInt(input.value);
-    const currentEx = exercises[currentIndex];
-    const correctAns = currentEx.num1 * currentEx.num2;
 
     if (isNaN(val)) return;
+
+    const correctAns = exercises[currentIndex].num1 * exercises[currentIndex].num2;
 
     if (val === correctAns) {
         correctAnswers++;
@@ -191,9 +182,6 @@ function finishGame() {
             </div>
         </div>
     `;
-
-    // החזרת החלקים למסך הסיום כדי שיוכלו לראות את הטבלה
-    document.body.classList.remove('game-active');
     updateTableDisplay();
 }
 
@@ -213,10 +201,10 @@ function updateTableDisplay() {
         const scores = JSON.parse(localStorage.getItem(`highScores_${level}`)) || [];
         document.getElementById('high-score-body').innerHTML = scores.map((s, i) => `
             <tr>
-                <td>#${i + 1}</td>
-                <td>${s.date}</td>
-                <td><b>${s.name}</b></td>
-                <td style="font-weight: 900;">${s.score}</td>
+                <td class="col-rank">#${i + 1}</td>
+                <td class="col-date">${s.date}</td>
+                <td class="col-name"><b>${s.name}</b></td>
+                <td class="col-score" style="font-weight: 900;">${s.score}</td>
             </tr>
         `).join('');
     } catch (e) { console.error("Update failed", e); }
