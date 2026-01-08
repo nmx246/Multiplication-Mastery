@@ -9,6 +9,27 @@ let lastFeedback = '';
 
 const positiveWords = ["Correct!", "Good Job!", "Amazing!", "Excellent!", "Awesome!", "Great!"];
 
+// פונקציה להוספת תגיות ה-Label ותמיכה במגע לטלפון
+function initNumpad() {
+    const buttons = document.querySelectorAll('.num-btn');
+    buttons.forEach(btn => {
+        const text = btn.innerText;
+        btn.setAttribute('data-label', text);
+
+        // תמיכה באפקט נאון לטלפון (הוספת class בלחיצה)
+        btn.addEventListener('touchstart', () => {
+            btn.classList.add('is-active');
+            if (window.navigator.vibrate) window.navigator.vibrate(10);
+        });
+        btn.addEventListener('touchend', () => {
+            btn.classList.remove('is-active');
+        });
+        btn.addEventListener('touchcancel', () => {
+            btn.classList.remove('is-active');
+        });
+    });
+}
+
 function showConfirmModal() {
     document.getElementById('confirmModal').style.display = 'flex';
 }
@@ -65,6 +86,24 @@ function setupInputListeners() {
     });
 }
 
+function typeNum(val) {
+    const input = document.getElementById('userGuess');
+
+    if (val === 'del') {
+        input.value = input.value.slice(0, -1);
+    } else if (val === 'clear') {
+        input.value = '';
+    } else {
+        if (input.value.length < 6) {
+            input.value += val;
+        }
+    }
+    // בטלפון focus יכול להקפיץ מקלדת מערכת, אז נמנעים ממנו אם זה touch
+    if (!('ontouchstart' in window)) {
+        input.focus();
+    }
+}
+
 function showExercise() {
     const current = exercises[currentIndex];
     document.getElementById('exerciseDisplay').innerText = `${current.num1}×${current.num2}`;
@@ -74,7 +113,10 @@ function showExercise() {
     const input = document.getElementById('userGuess');
     input.value = '';
     input.disabled = false;
-    setTimeout(() => { input.focus(); }, 10);
+    
+    if (!('ontouchstart' in window)) {
+        setTimeout(() => { input.focus(); }, 10);
+    }
 }
 
 function checkAnswer() {
@@ -83,7 +125,6 @@ function checkAnswer() {
     const correctAns = exercises[currentIndex].num1 * exercises[currentIndex].num2;
 
     if (isNaN(val)) {
-        input.focus();
         return;
     }
 
@@ -126,9 +167,7 @@ function finishGame() {
 
     const successRate = ((correctAnswers / 30) * 100).toFixed(2);
     const timeStr = formatTime(durationMs);
-
     const now = new Date();
-    // פורמט תאריך מלא DD/MM/YYYY
     const dateStr = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()}`;
 
     saveHighScore(currentPlayer, finalScore, dateStr);
@@ -174,4 +213,7 @@ function updateTableDisplay() {
     } catch (e) { console.error("Update failed", e); }
 }
 
-window.onload = updateTableDisplay;
+window.onload = () => {
+    initNumpad();
+    updateTableDisplay();
+};
