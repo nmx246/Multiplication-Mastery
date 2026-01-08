@@ -10,23 +10,6 @@ body {
     overflow-x: hidden;
 }
 
-/* --- פתרון ההסתרה למשחק פעיל --- */
-body.game-active #header-section,
-body.game-active #footer-section {
-    display: none;
-}
-
-body.game-active {
-    padding: 10px 20px;
-    /* צמצום המרווח למעלה כשהמשחק פעיל */
-}
-
-body.game-active .arcade-machine {
-    margin-top: 0;
-}
-
-/* ------------------------------- */
-
 .main-page-title {
     font-size: 70px;
     letter-spacing: 12px;
@@ -83,7 +66,6 @@ body.game-active .arcade-machine {
     border: 2px solid #fff;
     border-radius: 40px;
     padding: 10px;
-    scroll-margin-top: 10px;
 }
 
 .arcade-border {
@@ -91,12 +73,14 @@ body.game-active .arcade-machine {
     color: #000;
     border: 8px double #000;
     border-radius: 30px;
-    padding: 35px;
+    padding: 20px 35px 35px 35px;
+    /* Reduced top padding to move exercise up */
     text-align: center;
     min-height: 550px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
+    /* Changed to flex-start to keep content upper */
 }
 
 #start-screen {
@@ -156,6 +140,7 @@ body.game-active .arcade-machine {
     color: #fff;
 }
 
+/* --- ACTION BUTTONS (READY, NEXT, RESTART) --- */
 .action-btn {
     width: 90%;
     margin: 25px auto 0;
@@ -232,7 +217,8 @@ body.game-active .arcade-machine {
     color: #fff;
     border-radius: 20px;
     padding: 40px;
-    margin: 20px 0;
+    margin: 5px 0 10px 0;
+    /* Minimal top margin to keep it high */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -243,11 +229,19 @@ body.game-active .arcade-machine {
     margin: 0;
 }
 
+.feedback-msg {
+    font-size: 16px;
+    font-weight: bold;
+    min-height: 25px;
+    margin-bottom: 5px;
+}
+
+/* --- NUMPAD --- */
 .numpad {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin: 25px auto;
+    margin: 20px auto;
     width: 80%;
 }
 
@@ -332,6 +326,22 @@ body.game-active .arcade-machine {
     background: #222;
 }
 
+/* --- PLAYER INFO FOOTER --- */
+.player-info-footer {
+    margin-top: 25px;
+    border-top: 2px dashed #000;
+    padding-top: 15px;
+}
+
+.player-info-footer p {
+    font-weight: bold;
+    font-size: 18px;
+    /* Increased as requested */
+    margin: 5px 0;
+    text-transform: uppercase;
+}
+
+/* --- SCOREBOARD --- */
 .scoreboard-container {
     background: #fff;
     color: #000;
@@ -387,6 +397,22 @@ td {
     text-overflow: ellipsis;
 }
 
+.col-rank {
+    width: 15%;
+}
+
+.col-date {
+    width: 30%;
+}
+
+.col-name {
+    width: 35%;
+}
+
+.col-score {
+    width: 20%;
+}
+
 .footer-spacer {
     height: 30px;
 }
@@ -440,6 +466,7 @@ td {
     margin: 0 10px;
 }
 
+/* --- MOBILE --- */
 @media (max-width: 600px) {
     .main-page-title {
         font-size: 32px;
@@ -447,8 +474,7 @@ td {
     }
 
     .arcade-border {
-        padding: 20px 10px;
-        min-height: 500px;
+        padding: 15px 10px;
     }
 
     .game-screen-area h2 {
@@ -483,16 +509,8 @@ td {
         border-bottom-width: 8px !important;
     }
 
-    .action-btn:active,
-    .num-btn:active {
-        top: 6px !important;
-        border-bottom-width: 2px !important;
-    }
-
-    td,
-    th {
-        font-size: 12px;
-        padding: 10px 2px;
+    .player-info-footer p {
+        font-size: 16px;
     }
 }
 
