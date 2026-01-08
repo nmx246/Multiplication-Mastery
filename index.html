@@ -10,31 +10,29 @@
 
 <body>
 
-    <div id="header-section">
-        <h1 class="main-page-title">
-            <span>MULTIPLICATION</span>
-            <span>MASTERY</span>
-        </h1>
+    <h1 class="main-page-title">
+        <span>MULTIPLICATION</span>
+        <span>MASTERY</span>
+    </h1>
 
-        <div class="rules-box">
-            <p class="rules-title">GAME RULES & SCORING</p>
-            <div class="rules-content">
-                <p>To achieve a perfect 100 score:</p>
-                <ul>
-                    <li>Answer 30 questions correctly.</li>
-                    <li>Finish in 5 minutes (300s) or less.</li>
-                </ul>
-                <div class="rules-footer">
-                    <p class="penalty-text">⚠️ WRONG ANSWER: -3 POINTS</p>
-                    <p class="penalty-text">⚠️ TIME OVER 5 MIN: -1 POINT PER 10 SECONDS</p>
-                </div>
+    <div class="rules-box">
+        <p class="rules-title">GAME RULES & SCORING</p>
+        <div class="rules-content">
+            <p>To achieve a perfect 100 score:</p>
+            <ul>
+                <li>Answer 30 questions correctly.</li>
+                <li>Finish in 5 minutes (300s) or less.</li>
+            </ul>
+            <div class="rules-footer">
+                <p class="penalty-text">⚠️ WRONG ANSWER: -3 POINTS</p>
+                <p class="penalty-text">⚠️ TIME OVER 5 MIN: -1 POINT PER 10 SECONDS</p>
             </div>
         </div>
     </div>
 
-    <div class="arcade-machine" id="arcadeMachine">
+    <div class="arcade-machine">
         <div class="arcade-border">
-            <h2 id="machine-title">CALCULATION MACHINE</h2>
+            <h2 id="machine-title"></h2>
 
             <div id="game-area">
                 <div id="start-screen">
@@ -67,13 +65,15 @@
 
                 <div id="game-play-screen" style="display:none;">
                     <div class="flashcard">
-                        <p id="displayCurrentPlayer" style="font-weight: bold; font-size:16px; margin-bottom:10px;"></p>
                         <div class="game-screen-area" id="screenArea">
                             <h2 id="exerciseDisplay"></h2>
                         </div>
+
+                        <div id="feedbackArea" class="feedback-msg"></div>
+
                         <input type="number" id="userGuess" inputmode="numeric" enterkeyhint="next" placeholder="?"
                             autocomplete="off"
-                            style="border: 3px solid #000; font-size: 36px; width: 140px; text-align: center; padding: 10px; font-family: inherit;">
+                            style="border: 3px solid #000; font-size: 36px; width: 140px; text-align: center; padding: 10px; font-family: inherit; margin-top: 10px;">
 
                         <div id="numpad" class="numpad">
                             <div class="numpad-row">
@@ -103,9 +103,11 @@
                         <button class="action-btn finish-btn" id="finishBtn" data-label="SHOW MY SCORE"
                             onclick="finishGame()" style="display:none;">SHOW MY SCORE</button>
 
-                        <p id="questionCounter" style="font-size: 14px; margin-top: 15px; font-weight:bold;"></p>
-                        <div id="feedbackArea" class="feedback-msg"
-                            style="font-size:16px; font-weight:bold; margin-top:10px; min-height:25px;"></div>
+                        <div id="playerInfoArea" class="player-info-footer">
+                            <p id="displayCurrentPlayer"></p>
+                            <p id="displayCurrentLevel"></p>
+                            <p id="questionCounter"></p>
+                        </div>
                     </div>
                 </div>
 
@@ -118,7 +120,7 @@
         </div>
     </div>
 
-    <div class="scoreboard-container" id="footer-section">
+    <div class="scoreboard-container">
         <p id="table-title">HALL OF FAME</p>
         <div class="dropdown-wrapper">
             <select id="levelSelector" class="level-dropdown" onchange="updateTableDisplay()">
@@ -131,10 +133,10 @@
         <table id="high-score-table">
             <thead>
                 <tr>
-                    <th style="width: 10%;">#</th>
-                    <th style="width: 30%;">DATE</th>
-                    <th style="width: 40%;">NAME</th>
-                    <th style="width: 20%;">SCORE</th>
+                    <th class="col-rank">#</th>
+                    <th class="col-date">DATE</th>
+                    <th class="col-name">NAME</th>
+                    <th class="col-score">SCORE</th>
                 </tr>
             </thead>
             <tbody id="high-score-body"></tbody>
