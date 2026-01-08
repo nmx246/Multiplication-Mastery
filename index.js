@@ -104,10 +104,7 @@ function typeNum(val) {
 function showExercise() {
     const current = exercises[currentIndex];
     document.getElementById('exerciseDisplay').innerText = `${current.num1}×${current.num2}`;
-
-    // Update question counter at the TOP
     document.getElementById('questionCounterTop').innerText = `QUESTION ${currentIndex + 1}/30`;
-
     document.getElementById('feedbackArea').innerHTML = lastFeedback;
 
     const input = document.getElementById('userGuess');
