@@ -403,7 +403,7 @@ td {
 
     /* 1. ביטול החנק מהצדדים של המכונה */
     .arcade-border {
-        padding: 20px 5px; 
+        padding: 20px 5px;
     }
 
     .game-screen-area h2 {
@@ -413,22 +413,25 @@ td {
     /* 2. הגדלת רוחב המעטפת של המקלדת */
     .numpad {
         width: 98% !important;
-        gap: 8px; /* רווח סביר בין השורות */
+        gap: 8px;
+        /* רווח סביר בין השורות */
         margin: 15px auto;
     }
 
     /* 3. צמצום הרווח בין הכפתורים כדי שיגדלו הצידה ויהיו מלבנים */
     .numpad-row {
-        gap: 5px; 
+        gap: 5px;
     }
 
     .num-btn {
-        height: 75px;   /* גובה מעט נמוך יותר מה-85 הקודם כדי לשמור על יחס מלבני */
-        font-size: 32px; 
+        height: 75px;
+        /* גובה מעט נמוך יותר מה-85 הקודם כדי לשמור על יחס מלבני */
+        font-size: 32px;
         border-radius: 10px;
     }
 
-    td, th {
+    td,
+    th {
         font-size: 12px;
         padding: 10px 2px;
     }
@@ -439,7 +442,19 @@ td {
 }
 
 @keyframes shakeAnim {
-    10%, 90% { transform: translate3d(-1px, 0, 0); }
-    30%, 70% { transform: translate3d(-4px, 0, 0); }
-    40%, 60% { transform: translate3d(4px, 0, 0); }
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    30%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
 }
