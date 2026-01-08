@@ -9,24 +9,19 @@ let lastFeedback = '';
 
 const positiveWords = ["Correct!", "Good Job!", "Amazing!", "Excellent!", "Awesome!", "Great!"];
 
-// פונקציה לניהול אפקט הלחיצה בטאץ' מבלי לחסום את ה-Click
 function initButtonEffects() {
     const allBtns = document.querySelectorAll('.num-btn, .action-btn');
     allBtns.forEach(btn => {
-        // וודא שיש data-label לכולם
         if (!btn.getAttribute('data-label')) {
             btn.setAttribute('data-label', btn.innerText);
         }
-
         btn.addEventListener('touchstart', () => {
             btn.classList.add('is-active');
             if (window.navigator.vibrate) window.navigator.vibrate(10);
         }, { passive: true });
-
         btn.addEventListener('touchend', () => {
             btn.classList.remove('is-active');
         }, { passive: true });
-
         btn.addEventListener('touchcancel', () => {
             btn.classList.remove('is-active');
         }, { passive: true });
@@ -72,6 +67,11 @@ function startGame(choice) {
     document.getElementById('machine-title').innerText = currentLevelName.toUpperCase();
     document.getElementById('displayCurrentPlayer').innerText = `PLAYER: ${currentPlayer}`;
 
+    // --- התיקון לבקשתך כאן ---
+    const gameArea = document.getElementById('arcadeMachine');
+    gameArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // -----------------------
+
     startTime = Date.now();
     setupInputListeners();
     showExercise();
@@ -100,7 +100,6 @@ function typeNum(val) {
             input.value += val;
         }
     }
-    // פוקוס רק אם לא במובייל כדי לא להקפיץ מקלדת מערכת
     if (!('ontouchstart' in window)) {
         input.focus();
     }
@@ -124,7 +123,8 @@ function showExercise() {
 function checkAnswer() {
     const input = document.getElementById('userGuess');
     const val = parseInt(input.value);
-    const correctAns = exercises[currentIndex].num1 * exercises[currentIndex].num2;
+    const currentEx = exercises[currentIndex];
+    const correctAns = currentEx.num1 * currentEx.num2;
 
     if (isNaN(val)) return;
 
