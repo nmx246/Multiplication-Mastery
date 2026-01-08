@@ -62,17 +62,21 @@ function startGame(choice) {
             num2: Math.floor(Math.random() * choice) + 1
         });
     }
+
+    // הוספת קלאס לגוף הדף להסתרת שאר התוכן
+    document.body.classList.add('game-active');
+
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('game-play-screen').style.display = 'block';
     document.getElementById('machine-title').innerText = currentLevelName.toUpperCase();
     document.getElementById('displayCurrentPlayer').innerText = `PLAYER: ${currentPlayer}`;
 
-    // --- התיקון לגלילה המדויקת ---
+    // גלילה לראש הדף מיד אחרי ההסתרה
     setTimeout(() => {
-        const arcade = document.getElementById('arcadeMachine');
-        arcade.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 50);
-    // -----------------------
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }, 10);
 
     startTime = Date.now();
     setupInputListeners();
@@ -187,6 +191,9 @@ function finishGame() {
             </div>
         </div>
     `;
+
+    // החזרת החלקים למסך הסיום כדי שיוכלו לראות את הטבלה
+    document.body.classList.remove('game-active');
     updateTableDisplay();
 }
 
