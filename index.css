@@ -191,7 +191,7 @@ body {
     margin: 0;
 }
 
-/* --- המקלדת עם אפקט נאון בוהק --- */
+/* --- המקלדת --- */
 .numpad {
     display: flex;
     flex-direction: column;
@@ -404,14 +404,23 @@ td {
         font-size: 45px;
     }
 
-    /* שינוי: המקלדת תתפרס על 80% מרוחב המסך */
+    /* שינוי: המקלדת תתפרס על 90% מרוחב המכונה בנייד */
     .numpad {
-        width: 80vw;
+        width: 90%;
+        gap: 8px;
+        /* צמצום קל של הרווחים כדי לתת מקום לכפתורים גדולים */
+    }
+
+    .numpad-row {
+        gap: 8px;
     }
 
     .num-btn {
-        height: 75px;
-        font-size: 30px;
+        height: 85px;
+        /* הגדלת גובה הכפתור */
+        font-size: 32px;
+        /* הגדלת הפונט */
+        border-radius: 10px;
     }
 
     td,
