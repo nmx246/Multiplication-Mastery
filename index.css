@@ -168,7 +168,8 @@ body {
 .action-btn::before {
     content: '';
     position: absolute;
-    width: 250%; /* הגדלתי כדי לוודא כיסוי מלא של כפתור רחב */
+    width: 250%;
+    /* הגדלתי כדי לוודא כיסוי מלא של כפתור רחב */
     height: 500%;
     background: conic-gradient(transparent, transparent, transparent, #fff, #fff, transparent);
     animation: rotateNeon 0.8s linear infinite;
@@ -309,6 +310,7 @@ body {
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
@@ -468,11 +470,13 @@ td {
 
     .action-btn {
         width: 100% !important;
-        height: 85px !important; /* הגדלתי מעט יותר לטובת אחידות */
+        height: 85px !important;
+        /* הגדלתי מעט יותר לטובת אחידות */
         font-size: 26px !important;
         margin: 10px 0 0 0 !important;
         border-radius: 12px !important;
-        border-bottom-width: 8px !important; /* עובי זהה למקשים */
+        border-bottom-width: 8px !important;
+        /* עובי זהה למקשים */
     }
 
     .action-btn:active {
@@ -492,7 +496,19 @@ td {
 }
 
 @keyframes shakeAnim {
-    10%, 90% { transform: translate3d(-1px, 0, 0); }
-    30%, 70% { transform: translate3d(-4px, 0, 0); }
-    40%, 60% { transform: translate3d(4px, 0, 0); }
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    30%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
 }
