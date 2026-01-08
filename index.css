@@ -138,43 +138,80 @@ body {
     color: #fff;
 }
 
+/* --- איחוד כפתורי הפעולה (NEXT, READY, RESTART) עם עיצוב המקשים --- */
 .action-btn {
     width: 90%;
     margin: 25px auto 0;
-    padding: 16px;
+    height: 65px;
     border: 3px solid #000;
+    border-bottom: 8px solid #333;
     font-family: inherit;
     font-weight: 900;
-    background: #fff;
-    color: #000;
+    background: #000;
+    color: #fff;
     cursor: pointer;
     text-transform: uppercase;
     font-size: 18px;
-    display: block;
-    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
     position: relative;
+    overflow: hidden;
+    transition: all 0.05s ease;
     top: 0;
+    z-index: 1;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.next-btn {
+/* אפקט האור המסתובב לכל כפתורי הפעולה */
+.action-btn::before {
+    content: '';
+    position: absolute;
+    width: 250%; /* הגדלתי כדי לוודא כיסוי מלא של כפתור רחב */
+    height: 500%;
+    background: conic-gradient(transparent, transparent, transparent, #fff, #fff, transparent);
+    animation: rotateNeon 0.8s linear infinite;
+    display: none;
+    z-index: -2;
+}
+
+/* שכבת הרקע ששומרת על הטקסט קריא (משתמשת ב-data-label מה-HTML) */
+.action-btn::after {
+    content: attr(data-label);
+    position: absolute;
+    inset: 5px;
     background: #000;
-    color: #fff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: -1;
 }
 
-.next-btn:hover {
-    background: #fff;
-    color: #000;
-}
-
+/* כפתור FINISH/RESTART לבן במקור - נשמור על האופי שלו */
 .finish-btn {
     background: #fff;
     color: #000;
-    border: 4px solid #000;
+    border-color: #000;
 }
 
-.finish-btn:hover {
-    background: #000;
-    color: #fff;
+.finish-btn::after {
+    background: #fff;
+    color: #000;
+}
+
+/* אפקט לחיצה אחיד לכפתורי פעולה */
+.action-btn:active,
+.action-btn.is-active {
+    top: 6px;
+    border-bottom-width: 2px;
+    box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.7);
+}
+
+.action-btn:active::before,
+.action-btn.is-active::before {
+    display: block;
 }
 
 .game-screen-area {
@@ -272,7 +309,6 @@ body {
     from {
         transform: rotate(0deg);
     }
-
     to {
         transform: rotate(360deg);
     }
@@ -396,7 +432,7 @@ td {
     margin: 0 10px;
 }
 
-/* --- הגדרות מותאמות לנייד --- */
+/* --- התאמות לנייד --- */
 @media (max-width: 600px) {
     .main-page-title {
         font-size: 32px;
@@ -415,7 +451,6 @@ td {
         width: 100% !important;
         gap: 8px;
         margin: 10px auto;
-        /* צמצום מרחק מה-Next */
     }
 
     .numpad-row {
@@ -431,21 +466,15 @@ td {
         border-bottom-width: 6px;
     }
 
-    /* תיקון אגרסיבי לכפתור NEXT בנייד */
     .action-btn {
         width: 100% !important;
-        height: 85px !important;
-        /* גובה מאסיבי כמו המקלדת */
-        font-size: 28px !important;
-        /* פונט גדול */
+        height: 85px !important; /* הגדלתי מעט יותר לטובת אחידות */
+        font-size: 26px !important;
         margin: 10px 0 0 0 !important;
-        /* צמצום המרווח בינו לבין המקלדת */
         border-radius: 12px !important;
-        border-bottom: 8px solid #333 !important;
-        /* הוספת "עומק" כמו למספרים */
+        border-bottom-width: 8px !important; /* עובי זהה למקשים */
     }
 
-    /* הוספת אפקט לחיצה ל-NEXT */
     .action-btn:active {
         top: 6px !important;
         border-bottom-width: 2px !important;
@@ -463,19 +492,7 @@ td {
 }
 
 @keyframes shakeAnim {
-
-    10%,
-    90% {
-        transform: translate3d(-1px, 0, 0);
-    }
-
-    30%,
-    70% {
-        transform: translate3d(-4px, 0, 0);
-    }
-
-    40%,
-    60% {
-        transform: translate3d(4px, 0, 0);
-    }
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    30%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
 }
