@@ -1,513 +1,219 @@
-body {
-    background-color: #000;
-    color: #fff;
-    font-family: 'Courier New', Courier, monospace;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 60px 20px;
-    margin: 0;
-    overflow-x: hidden;
+let exercises = [];
+let currentIndex = 0;
+let correctAnswers = 0;
+let baseScore = 100;
+let startTime;
+let currentLevelName = '';
+let currentPlayer = '';
+let lastFeedback = '';
+
+const positiveWords = ["Correct!", "Good Job!", "Amazing!", "Excellent!", "Awesome!", "Great!"];
+
+// פונקציה לניהול אפקט הלחיצה בטאץ' מבלי לחסום את ה-Click
+function initButtonEffects() {
+    const allBtns = document.querySelectorAll('.num-btn, .action-btn');
+    allBtns.forEach(btn => {
+        // וודא שיש data-label לכולם
+        if (!btn.getAttribute('data-label')) {
+            btn.setAttribute('data-label', btn.innerText);
+        }
+
+        btn.addEventListener('touchstart', () => {
+            btn.classList.add('is-active');
+            if (window.navigator.vibrate) window.navigator.vibrate(10);
+        }, { passive: true });
+
+        btn.addEventListener('touchend', () => {
+            btn.classList.remove('is-active');
+        }, { passive: true });
+
+        btn.addEventListener('touchcancel', () => {
+            btn.classList.remove('is-active');
+        }, { passive: true });
+    });
 }
 
-.main-page-title {
-    font-size: 70px;
-    letter-spacing: 12px;
-    line-height: 1.1;
-    margin-bottom: 60px;
-    text-align: center;
-    text-transform: uppercase;
-    color: #fff;
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff;
-    display: flex;
-    flex-direction: column;
+function showConfirmModal() {
+    document.getElementById('confirmModal').style.display = 'flex';
 }
 
-.rules-box,
-.arcade-machine,
-.scoreboard-container {
-    width: 100%;
-    max-width: 550px;
-    box-sizing: border-box;
-    margin-bottom: 40px;
-}
-
-.rules-box {
-    border: 3px solid #fff;
-    border-radius: 15px;
-    padding: 25px;
-}
-
-.rules-title {
-    font-weight: bold;
-    text-align: center;
-    font-size: 22px;
-    margin-bottom: 20px;
-}
-
-.rules-content p,
-.rules-content li {
-    font-size: 17px;
-    margin: 10px 0;
-}
-
-.penalty-text {
-    color: #ff4444;
-    font-weight: bold;
-    font-size: 14px;
-    margin: 8px 0;
-}
-
-.spacer-v {
-    height: 30px;
-}
-
-.arcade-machine {
-    border: 2px solid #fff;
-    border-radius: 40px;
-    padding: 10px;
-}
-
-.arcade-border {
-    background-color: #fff;
-    color: #000;
-    border: 8px double #000;
-    border-radius: 30px;
-    padding: 35px;
-    text-align: center;
-    min-height: 550px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-#start-screen {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-}
-
-.ready-btn {
-    margin-top: 50px !important;
-    margin-bottom: 20px;
-}
-
-#playerName {
-    width: 90%;
-    padding: 12px;
-    border: 2px solid #000;
-    font-family: inherit;
-    text-align: center;
-    font-size: 18px;
-    margin: 0 auto;
-    display: block;
-}
-
-.error-msg {
-    color: #ff0000;
-    font-size: 12px;
-    font-weight: bold;
-    margin-top: 10px;
-    display: none;
-}
-
-.radio-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 90%;
-    margin: 0 auto;
-}
-
-.lvl-label {
-    display: block;
-    padding: 12px;
-    border: 2px solid #000;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.lvl-option input {
-    position: absolute;
-    opacity: 0;
-}
-
-.lvl-option input:checked+.lvl-label {
-    background: #000;
-    color: #fff;
-}
-
-/* --- איחוד כפתורי הפעולה (NEXT, READY, RESTART) עם עיצוב המקשים --- */
-.action-btn {
-    width: 90%;
-    margin: 25px auto 0;
-    height: 65px;
-    border: 3px solid #000;
-    border-bottom: 8px solid #333;
-    font-family: inherit;
-    font-weight: 900;
-    background: #000;
-    color: #fff;
-    cursor: pointer;
-    text-transform: uppercase;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.05s ease;
-    top: 0;
-    z-index: 1;
-    -webkit-tap-highlight-color: transparent;
-}
-
-/* אפקט האור המסתובב לכל כפתורי הפעולה */
-.action-btn::before {
-    content: '';
-    position: absolute;
-    width: 250%;
-    height: 500%;
-    background: conic-gradient(transparent, transparent, transparent, #fff, #fff, transparent);
-    animation: rotateNeon 0.8s linear infinite;
-    display: none;
-    z-index: -2;
-}
-
-/* שכבת הרקע ששומרת על הטקסט קריא (משתמשת ב-data-label מה-HTML) */
-.action-btn::after {
-    content: attr(data-label);
-    position: absolute;
-    inset: 5px;
-    background: #000;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: -1;
-}
-
-/* כפתור FINISH/RESTART לבן במקור - נשמור על האופי שלו */
-.finish-btn {
-    background: #fff;
-    color: #000;
-    border-color: #000;
-}
-
-.finish-btn::after {
-    background: #fff;
-    color: #000;
-}
-
-/* אפקט לחיצה אחיד לכפתורי פעולה */
-.action-btn:active,
-.action-btn.is-active {
-    top: 6px;
-    border-bottom-width: 2px;
-    box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.7);
-}
-
-.action-btn:active::before,
-.action-btn.is-active::before {
-    display: block;
-}
-
-.game-screen-area {
-    background: #000;
-    color: #fff;
-    border-radius: 20px;
-    padding: 40px;
-    margin: 20px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.game-screen-area h2 {
-    font-size: 60px;
-    margin: 0;
-}
-
-/* --- המקלדת --- */
-.numpad {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin: 25px auto;
-    width: 80%;
-}
-
-.numpad-row {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-}
-
-.num-btn {
-    flex: 1;
-    height: 65px;
-    background: #000;
-    color: #fff;
-    border: 3px solid #000;
-    border-bottom: 8px solid #333;
-    font-family: inherit;
-    font-size: 26px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.05s ease;
-    top: 0;
-    z-index: 1;
-    -webkit-tap-highlight-color: transparent;
-}
-
-/* הוספתי כאן את ה-data-label למספרים למקרה שתרצה אחידות */
-.num-btn::after {
-    content: attr(data-label);
-    position: absolute;
-    inset: 5px;
-    background: #000;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: -1;
-}
-
-.num-btn::before {
-    content: '';
-    position: absolute;
-    width: 250%;
-    height: 250%;
-    background: conic-gradient(transparent, transparent, transparent, #fff, #fff, transparent);
-    animation: rotateNeon 0.8s linear infinite;
-    display: none;
-    z-index: -2;
-}
-
-.num-btn:active,
-.num-btn.is-active {
-    top: 6px;
-    border-bottom-width: 2px;
-    box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.7),
-        inset 0 0 15px rgba(255, 255, 255, 0.3);
-}
-
-.num-btn:active::before,
-.num-btn.is-active::before {
-    display: block;
-}
-
-@keyframes rotateNeon {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
+function confirmClean(isSure) {
+    if (isSure) {
+        localStorage.clear();
+        location.reload();
+    } else {
+        document.getElementById('confirmModal').style.display = 'none';
     }
 }
 
-.del-btn,
-.clear-btn {
-    background: #222;
-}
-
-/* Scoreboard Styling */
-.scoreboard-container {
-    background: #fff;
-    color: #000;
-    border: 8px double #000;
-    border-radius: 25px;
-    padding: 30px;
-    text-align: center;
-}
-
-#table-title {
-    font-weight: 900;
-    font-size: 26px;
-    margin-bottom: 20px;
-}
-
-.dropdown-wrapper {
-    margin-bottom: 30px;
-}
-
-.level-dropdown {
-    width: 160px;
-    padding: 10px;
-    font-family: inherit;
-    font-weight: bold;
-    border: 3px solid #000;
-    text-align-last: center;
-    background: #fff;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-    margin: 0 auto;
-    border: 2px solid #000;
-}
-
-th {
-    border-bottom: 3px solid #000;
-    padding: 12px 5px;
-    background: #f0f0f0;
-    font-size: 14px;
-    text-align: center;
-}
-
-td {
-    padding: 14px 5px;
-    border-bottom: 1px solid #ccc;
-    font-size: 14px;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.footer-spacer {
-    height: 30px;
-}
-
-.clean-btn {
-    background: none;
-    border: 1px solid #888;
-    color: #888;
-    font-family: inherit;
-    font-size: 11px;
-    padding: 6px 12px;
-    cursor: pointer;
-    text-transform: uppercase;
-    border-radius: 4px;
-}
-
-.clean-btn:hover {
-    color: #000;
-    border-color: #000;
-}
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background: #fff;
-    color: #000;
-    padding: 30px;
-    border: 5px double #000;
-    border-radius: 20px;
-    text-align: center;
-    width: 400px;
-}
-
-.modal-buttons {
-    margin-top: 20px;
-}
-
-.modal-btn {
-    padding: 10px 20px;
-    border: 3px solid #000;
-    font-family: inherit;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 0 10px;
-}
-
-/* --- התאמות לנייד --- */
-@media (max-width: 600px) {
-    .main-page-title {
-        font-size: 32px;
-        letter-spacing: 6px;
+function validateAndStart() {
+    const nameInput = document.getElementById('playerName');
+    if (nameInput.value.trim() === "") {
+        document.getElementById('nameError').style.display = "block";
+        return;
     }
+    currentPlayer = nameInput.value.trim();
+    const selectedRadio = document.querySelector('input[name="level"]:checked');
+    currentLevelName = selectedRadio.getAttribute('data-name');
+    document.getElementById('levelSelector').value = currentLevelName;
+    startGame(parseInt(selectedRadio.value));
+}
 
-    .arcade-border {
-        padding: 20px 10px;
+function startGame(choice) {
+    exercises = []; currentIndex = 0; correctAnswers = 0; baseScore = 100; lastFeedback = '';
+    for (let i = 0; i < 30; i++) {
+        exercises.push({
+            num1: Math.floor(Math.random() * choice) + 1,
+            num2: Math.floor(Math.random() * choice) + 1
+        });
     }
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('game-play-screen').style.display = 'block';
+    document.getElementById('machine-title').innerText = currentLevelName.toUpperCase();
+    document.getElementById('displayCurrentPlayer').innerText = `PLAYER: ${currentPlayer}`;
 
-    .game-screen-area h2 {
-        font-size: 45px;
+    startTime = Date.now();
+    setupInputListeners();
+    showExercise();
+}
+
+function setupInputListeners() {
+    const input = document.getElementById('userGuess');
+    input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (currentIndex < exercises.length) {
+                checkAnswer();
+            }
+        }
+    });
+}
+
+function typeNum(val) {
+    const input = document.getElementById('userGuess');
+    if (val === 'del') {
+        input.value = input.value.slice(0, -1);
+    } else if (val === 'clear') {
+        input.value = '';
+    } else {
+        if (input.value.length < 6) {
+            input.value += val;
+        }
     }
-
-    .numpad {
-        width: 100% !important;
-        gap: 8px;
-        margin: 10px auto;
-    }
-
-    .numpad-row {
-        gap: 5px;
-        width: 100%;
-    }
-
-    .num-btn {
-        height: 75px;
-        font-size: 30px;
-        border-radius: 10px;
-        flex: 1;
-        border-bottom-width: 6px;
-    }
-
-    .action-btn {
-        width: 100% !important;
-        height: 85px !important;
-        font-size: 26px !important;
-        margin: 10px 0 0 0 !important;
-        border-radius: 12px !important;
-        border-bottom-width: 8px !important;
-    }
-
-    .action-btn:active,
-    .num-btn:active {
-        top: 6px !important;
-        border-bottom-width: 2px !important;
-    }
-
-    td,
-    th {
-        font-size: 12px;
-        padding: 10px 2px;
+    // פוקוס רק אם לא במובייל כדי לא להקפיץ מקלדת מערכת
+    if (!('ontouchstart' in window)) {
+        input.focus();
     }
 }
 
-.shake {
-    animation: shakeAnim 0.4s both;
-}
+function showExercise() {
+    const current = exercises[currentIndex];
+    document.getElementById('exerciseDisplay').innerText = `${current.num1}×${current.num2}`;
+    document.getElementById('questionCounter').innerText = `QUESTION ${currentIndex + 1}/30`;
+    document.getElementById('feedbackArea').innerHTML = lastFeedback;
 
-@keyframes shakeAnim {
+    const input = document.getElementById('userGuess');
+    input.value = '';
+    input.disabled = false;
 
-    10%,
-    90% {
-        transform: translate3d(-1px, 0, 0);
-    }
-
-    30%,
-    70% {
-        transform: translate3d(-4px, 0, 0);
-    }
-
-    40%,
-    60% {
-        transform: translate3d(4px, 0, 0);
+    if (!('ontouchstart' in window)) {
+        setTimeout(() => { input.focus(); }, 10);
     }
 }
+
+function checkAnswer() {
+    const input = document.getElementById('userGuess');
+    const val = parseInt(input.value);
+    const correctAns = exercises[currentIndex].num1 * exercises[currentIndex].num2;
+
+    if (isNaN(val)) return;
+
+    if (val === correctAns) {
+        correctAnswers++;
+        lastFeedback = `<span style="color:green">${positiveWords[Math.floor(Math.random() * positiveWords.length)]}</span>`;
+    } else {
+        baseScore -= 3;
+        lastFeedback = `<span style="color:red">Wrong! Answer: ${correctAns}</span>`;
+        const screen = document.getElementById('screenArea');
+        screen.classList.add('shake');
+        setTimeout(() => screen.classList.remove('shake'), 400);
+    }
+
+    document.getElementById('feedbackArea').innerHTML = lastFeedback;
+
+    if (currentIndex === exercises.length - 1) {
+        document.getElementById('nextBtn').style.display = 'none';
+        document.getElementById('finishBtn').style.display = 'block';
+        input.disabled = true;
+    } else {
+        currentIndex++;
+        setTimeout(showExercise, 400);
+    }
+}
+
+function formatTime(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function finishGame() {
+    document.getElementById('game-play-screen').style.display = 'none';
+    const durationMs = Date.now() - startTime;
+    const durationSeconds = durationMs / 1000;
+    const timePenalty = Math.max(0, (durationSeconds - 300) / 10);
+    const finalScore = Math.round(Math.max(0, baseScore - timePenalty));
+
+    const successRate = ((correctAnswers / 30) * 100).toFixed(2);
+    const timeStr = formatTime(durationMs);
+    const now = new Date();
+    const dateStr = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()}`;
+
+    saveHighScore(currentPlayer, finalScore, dateStr);
+
+    document.getElementById('end-screen').innerHTML = `
+        <div style="font-weight: bold; margin-top: 20px; line-height: 1.6;">
+            <h2 style="border-bottom: 2px solid #000; margin-bottom: 20px; font-size: 32px;">GAME OVER</h2>
+            <div style="text-align: left; display: inline-block; font-size: 18px; background: #eee; padding: 15px; border-radius: 10px; border: 2px solid #000;">
+                <p>CORRECT ANSWERS: ${correctAnswers}/30</p>
+                <p>SUCCESS RATE: ${successRate}%</p>
+                <p>DURATION: ${timeStr}</p>
+            </div>
+            <div style="font-size: 36px; border: 4px solid #000; padding: 20px; margin: 25px auto; background:#000; color:#fff; width: fit-content; text-shadow: 0 0 5px #fff;">
+                SCORE: ${finalScore}
+            </div>
+        </div>
+    `;
+    updateTableDisplay();
+}
+
+function saveHighScore(name, score, date) {
+    try {
+        const key = `highScores_${currentLevelName}`;
+        let scores = JSON.parse(localStorage.getItem(key)) || [];
+        scores.push({ name, score, date });
+        scores.sort((a, b) => b.score - a.score);
+        localStorage.setItem(key, JSON.stringify(scores.slice(0, 10)));
+    } catch (e) { console.error("Save failed", e); }
+}
+
+function updateTableDisplay() {
+    try {
+        const level = document.getElementById('levelSelector').value;
+        const scores = JSON.parse(localStorage.getItem(`highScores_${level}`)) || [];
+        document.getElementById('high-score-body').innerHTML = scores.map((s, i) => `
+            <tr>
+                <td>#${i + 1}</td>
+                <td>${s.date}</td>
+                <td><b>${s.name}</b></td>
+                <td style="font-weight: 900;">${s.score}</td>
+            </tr>
+        `).join('');
+    } catch (e) { console.error("Update failed", e); }
+}
+
+window.onload = () => {
+    initButtonEffects();
+    updateTableDisplay();
+};
