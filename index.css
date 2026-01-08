@@ -468,14 +468,26 @@ td {
         font-size: 45px;
     }
 
+    /* תיקון: הגדלת מקשי המספרים במובייל */
     .num-btn {
-        height: 75px;
-        font-size: 30px;
+        height: 85px;
+        /* הגדלה מ-65 */
+        font-size: 34px;
+        /* הגדלה מ-26 */
     }
 
+    /* תיקון: הגדלת כפתורי הפעולה במובייל */
     .action-btn {
-        height: 85px !important;
-        font-size: 26px !important;
+        height: 90px !important;
+        /* הגדלה מ-65 */
+        font-size: 28px !important;
+        /* הגדלה מ-18 */
+    }
+
+    .numpad {
+        width: 100%;
+        /* שימוש בכל הרוחב הזמין */
+        gap: 15px;
     }
 }
 
