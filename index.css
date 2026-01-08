@@ -212,7 +212,6 @@ body {
     display: block;
 }
 
-/* Question counter ABOVE the box */
 .top-question-num {
     font-weight: bold;
     font-size: 20px;
@@ -332,7 +331,6 @@ body {
     background: #222;
 }
 
-/* Player Info Footer - Larger Text */
 .player-info-footer {
     margin-top: 25px;
     border-top: 2px dashed #000;
@@ -454,40 +452,57 @@ td {
     margin: 0 10px;
 }
 
+/* התאמות למובייל כדי שהכל ייכנס למסך אחד */
 @media (max-width: 600px) {
+    body {
+        padding: 20px 10px;
+    }
+
     .main-page-title {
         font-size: 32px;
         letter-spacing: 6px;
+        margin-bottom: 30px;
     }
 
     .arcade-border {
-        padding: 10px 10px 25px 10px;
+        padding: 10px 15px 15px 15px;
+        min-height: auto;
+    }
+
+    .game-screen-area {
+        padding: 20px;
+        margin-bottom: 5px;
     }
 
     .game-screen-area h2 {
-        font-size: 45px;
+        font-size: 42px;
     }
 
-    /* תיקון: הגדלת מקשי המספרים במובייל */
+    /* הקטנת המקשים למובייל */
     .num-btn {
-        height: 85px;
-        /* הגדלה מ-65 */
-        font-size: 34px;
-        /* הגדלה מ-26 */
+        height: 60px;
+        font-size: 28px;
     }
 
-    /* תיקון: הגדלת כפתורי הפעולה במובייל */
     .action-btn {
-        height: 90px !important;
-        /* הגדלה מ-65 */
-        font-size: 28px !important;
-        /* הגדלה מ-18 */
+        height: 70px !important;
+        font-size: 24px !important;
+        margin-top: 15px;
     }
 
     .numpad {
         width: 100%;
-        /* שימוש בכל הרוחב הזמין */
-        gap: 15px;
+        gap: 8px;
+        margin: 10px auto;
+    }
+
+    .numpad-row {
+        gap: 8px;
+    }
+
+    .player-info-footer {
+        margin-top: 15px;
+        padding-top: 10px;
     }
 }
 
@@ -502,7 +517,7 @@ td {
         transform: translate3d(-1px, 0, 0);
     }
 
-    30%,
+    30%,ש
     70% {
         transform: translate3d(-4px, 0, 0);
     }
