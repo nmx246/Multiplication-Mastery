@@ -65,38 +65,33 @@
 
                 <div id="game-play-screen" style="display:none;">
                     <div class="flashcard">
-
                         <div id="questionCounterTop" class="top-question-num">QUESTION 1/30</div>
-
                         <div class="game-screen-area" id="screenArea">
                             <h2 id="exerciseDisplay"></h2>
                         </div>
-
                         <div id="feedbackArea" class="feedback-msg"></div>
-
                         <input type="number" id="userGuess" inputmode="numeric" enterkeyhint="next" placeholder="?"
-                            autocomplete="off"
-                            style="border: 3px solid #000; font-size: 36px; width: 140px; text-align: center; padding: 10px; font-family: inherit; margin: 10px auto; display: block;">
+                            autocomplete="off">
 
                         <div id="numpad" class="numpad">
                             <div class="numpad-row">
-                                <button class="num-btn" data-label="1" onclick="typeNum(1)">1</button>
-                                <button class="num-btn" data-label="2" onclick="typeNum(2)">2</button>
-                                <button class="num-btn" data-label="3" onclick="typeNum(3)">3</button>
+                                <button class="num-btn" onclick="typeNum(1)">1</button>
+                                <button class="num-btn" onclick="typeNum(2)">2</button>
+                                <button class="num-btn" onclick="typeNum(3)">3</button>
                             </div>
                             <div class="numpad-row">
-                                <button class="num-btn" data-label="4" onclick="typeNum(4)">4</button>
-                                <button class="num-btn" data-label="5" onclick="typeNum(5)">5</button>
-                                <button class="num-btn" data-label="6" onclick="typeNum(6)">6</button>
+                                <button class="num-btn" onclick="typeNum(4)">4</button>
+                                <button class="num-btn" onclick="typeNum(5)">5</button>
+                                <button class="num-btn" onclick="typeNum(6)">6</button>
                             </div>
                             <div class="numpad-row">
-                                <button class="num-btn" data-label="7" onclick="typeNum(7)">7</button>
-                                <button class="num-btn" data-label="8" onclick="typeNum(8)">8</button>
-                                <button class="num-btn" data-label="9" onclick="typeNum(9)">9</button>
+                                <button class="num-btn" onclick="typeNum(7)">7</button>
+                                <button class="num-btn" onclick="typeNum(8)">8</button>
+                                <button class="num-btn" onclick="typeNum(9)">9</button>
                             </div>
                             <div class="numpad-row">
                                 <button class="num-btn del-btn" data-label="⌫" onclick="typeNum('del')">⌫</button>
-                                <button class="num-btn" data-label="0" onclick="typeNum(0)">0</button>
+                                <button class="num-btn" onclick="typeNum(0)">0</button>
                                 <button class="num-btn clear-btn" data-label="C" onclick="typeNum('clear')">C</button>
                             </div>
                         </div>
@@ -151,9 +146,19 @@
         <div class="modal-content">
             <p>ARE YOU SURE YOU WANT TO CLEAN YOUR SCORES?</p>
             <div class="modal-buttons">
-                <button class="modal-btn yes" onclick="confirmClean(true)">YES</button>
-                <button class="modal-btn no" onclick="confirmClean(false)">NO</button>
+                <button class="modal-btn" onclick="confirmClean(true)">YES</button>
+                <button class="modal-btn" onclick="confirmClean(false)">NO</button>
             </div>
+        </div>
+    </div>
+
+    <div id="scoreDetailModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <h2 style="border-bottom: 2px solid #000; margin-bottom: 20px;">SCORE DETAILS</h2>
+            <div id="detailContent"
+                style="text-align: left; background: #eee; padding: 15px; border-radius: 10px; border: 2px solid #000; font-family: inherit;">
+            </div>
+            <button class="modal-btn" onclick="closeDetailModal()" style="margin-top:20px; width: 100%;">CLOSE</button>
         </div>
     </div>
 
