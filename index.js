@@ -105,8 +105,8 @@ function showExercise() {
     const current = exercises[currentIndex];
     document.getElementById('exerciseDisplay').innerText = `${current.num1}×${current.num2}`;
 
-    // Update the counter at the top
-    document.getElementById('questionCounterTop').innerText = `${currentIndex + 1}/30`;
+    // Update question counter at the TOP
+    document.getElementById('questionCounterTop').innerText = `QUESTION ${currentIndex + 1}/30`;
 
     document.getElementById('feedbackArea').innerHTML = lastFeedback;
 
