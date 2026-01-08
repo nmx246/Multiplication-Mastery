@@ -394,44 +394,41 @@ td {
     margin: 0 10px;
 }
 
-/* --- השינויים להגדלה בנייד עם תיקון המרג'ין והרוחב --- */
+/* --- השינויים הנדרשים לתיקון הצורה בנייד --- */
 @media (max-width: 600px) {
     .main-page-title {
         font-size: 32px;
         letter-spacing: 6px;
     }
 
-    /* תיקון קריטי: צמצום הפדינג של המכונה כדי לאפשר למקלדת להתרחב */
+    /* 1. ביטול החנק מהצדדים של המכונה */
     .arcade-border {
-        padding: 10px 5px;
+        padding: 20px 5px; 
     }
 
     .game-screen-area h2 {
         font-size: 45px;
     }
 
+    /* 2. הגדלת רוחב המעטפת של המקלדת */
     .numpad {
-        width: 95% !important;
-        /* הבטחת רוחב */
-        gap: 2px;
-        margin: 15px auto !important;
-        /* מרכוז אוטומטי */
+        width: 98% !important;
+        gap: 8px; /* רווח סביר בין השורות */
+        margin: 15px auto;
     }
 
+    /* 3. צמצום הרווח בין הכפתורים כדי שיגדלו הצידה ויהיו מלבנים */
     .numpad-row {
-        gap: 8px;
-        width: 100%;
-        /* שהשורה תמלא את ה-numpad */
+        gap: 5px; 
     }
 
     .num-btn {
-        height: 85px;
-        font-size: 32px;
+        height: 75px;   /* גובה מעט נמוך יותר מה-85 הקודם כדי לשמור על יחס מלבני */
+        font-size: 32px; 
         border-radius: 10px;
     }
 
-    td,
-    th {
+    td, th {
         font-size: 12px;
         padding: 10px 2px;
     }
@@ -442,19 +439,7 @@ td {
 }
 
 @keyframes shakeAnim {
-
-    10%,
-    90% {
-        transform: translate3d(-1px, 0, 0);
-    }
-
-    30%,
-    70% {
-        transform: translate3d(-4px, 0, 0);
-    }
-
-    40%,
-    60% {
-        transform: translate3d(4px, 0, 0);
-    }
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    30%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
 }
