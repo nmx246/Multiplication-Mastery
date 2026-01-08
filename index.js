@@ -105,7 +105,7 @@ function typeNum(val) {
 function showExercise() {
     const current = exercises[currentIndex];
     document.getElementById('exerciseDisplay').innerText = `${current.num1}×${current.num2}`;
-    document.getElementById('questionCounter').innerText = `QUESTION ${currentIndex + 1}/30`;
+    document.getElementById('questionCounter').innerText = `${currentIndex + 1}/30`;
     document.getElementById('feedbackArea').innerHTML = lastFeedback;
 
     const input = document.getElementById('userGuess');
@@ -201,10 +201,10 @@ function updateTableDisplay() {
         const scores = JSON.parse(localStorage.getItem(`highScores_${level}`)) || [];
         document.getElementById('high-score-body').innerHTML = scores.map((s, i) => `
             <tr>
-                <td class="col-rank">#${i + 1}</td>
-                <td class="col-date">${s.date}</td>
-                <td class="col-name"><b>${s.name}</b></td>
-                <td class="col-score" style="font-weight: 900;">${s.score}</td>
+                <td>#${i + 1}</td>
+                <td>${s.date}</td>
+                <td><b>${s.name}</b></td>
+                <td style="font-weight: 900;">${s.score}</td>
             </tr>
         `).join('');
     } catch (e) { console.error("Update failed", e); }
