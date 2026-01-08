@@ -196,9 +196,13 @@ function saveHighScore(name, score, date) {
 
 function updateTableDisplay() {
     try {
-        const level = document.getElementById('levelSelector').value;
+        const levelSelector = document.getElementById('levelSelector');
+        if (!levelSelector) return;
+        const level = levelSelector.value;
         const scores = JSON.parse(localStorage.getItem(`highScores_${level}`)) || [];
-        document.getElementById('high-score-body').innerHTML = scores.map((s, i) => `
+        const tableBody = document.getElementById('high-score-body');
+        if (!tableBody) return;
+        tableBody.innerHTML = scores.map((s, i) => `
             <tr>
                 <td class="col-rank">#${i + 1}</td>
                 <td class="col-date">${s.date}</td>
