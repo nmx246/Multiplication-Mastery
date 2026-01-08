@@ -191,6 +191,92 @@ body {
     margin: 0;
 }
 
+/* --- המקלדת עם אפקט נאון בוהק --- */
+.numpad {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 25px auto;
+    width: 80%;
+}
+
+.numpad-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.num-btn {
+    flex: 1;
+    height: 65px;
+    background: #000;
+    color: #fff;
+    border: 3px solid #000;
+    border-bottom: 8px solid #333;
+    font-family: inherit;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.05s ease;
+    top: 0;
+    z-index: 1;
+    -webkit-tap-highlight-color: transparent; /* מסיר מסגרת אפורה בטלפון */
+}
+
+/* הפס המסתובב */
+.num-btn::before {
+    content: '';
+    position: absolute;
+    width: 250%;
+    height: 250%;
+    background: conic-gradient(transparent, transparent, transparent, #fff, #fff, transparent);
+    animation: rotateNeon 0.8s linear infinite;
+    display: none;
+    z-index: -2;
+}
+
+/* מצב פעיל - מחשב וטלפון */
+.num-btn:active, .num-btn.is-active {
+    top: 6px;
+    border-bottom-width: 2px;
+    box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.7),
+        inset 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.num-btn:active::before, .num-btn.is-active::before {
+    display: block;
+}
+
+/* החור השחור במרכז */
+.num-btn::after {
+    content: attr(data-label);
+    position: absolute;
+    inset: 5px;
+    background: #000;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: -1;
+}
+
+@keyframes rotateNeon {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.del-btn,
+.clear-btn {
+    background: #222;
+}
+
 /* Scoreboard Styling */
 .scoreboard-container {
     background: #fff;
@@ -211,7 +297,6 @@ body {
     margin-bottom: 30px;
 }
 
-/* רווח משמעותי מתחת לדרופדאון */
 .level-dropdown {
     width: 160px;
     padding: 10px;
@@ -252,7 +337,6 @@ td {
     height: 30px;
 }
 
-/* רווח בין הטבלה לכפתור הניקוי */
 .clean-btn {
     background: none;
     border: 1px solid #888;
@@ -293,6 +377,19 @@ td {
     width: 400px;
 }
 
+.modal-buttons {
+    margin-top: 20px;
+}
+
+.modal-btn {
+    padding: 10px 20px;
+    border: 3px solid #000;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
 @media (max-width: 600px) {
     .main-page-title {
         font-size: 32px;
@@ -301,6 +398,15 @@ td {
 
     .game-screen-area h2 {
         font-size: 45px;
+    }
+
+    .numpad {
+        width: 95%;
+    }
+
+    .num-btn {
+        height: 75px;
+        font-size: 30px;
     }
 
     td,
@@ -315,19 +421,7 @@ td {
 }
 
 @keyframes shakeAnim {
-
-    10%,
-    90% {
-        transform: translate3d(-1px, 0, 0);
-    }
-
-    30%,
-    70% {
-        transform: translate3d(-4px, 0, 0);
-    }
-
-    40%,
-    60% {
-        transform: translate3d(4px, 0, 0);
-    }
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    30%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
 }
