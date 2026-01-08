@@ -9,14 +9,12 @@ let lastFeedback = '';
 
 const positiveWords = ["Correct!", "Good Job!", "Amazing!", "Excellent!", "Awesome!", "Great!"];
 
-// פונקציה להוספת תגיות ה-Label ותמיכה במגע לטלפון
 function initNumpad() {
     const buttons = document.querySelectorAll('.num-btn');
     buttons.forEach(btn => {
         const text = btn.innerText;
         btn.setAttribute('data-label', text);
 
-        // תמיכה באפקט נאון לטלפון (הוספת class בלחיצה)
         btn.addEventListener('touchstart', () => {
             btn.classList.add('is-active');
             if (window.navigator.vibrate) window.navigator.vibrate(10);
@@ -98,7 +96,6 @@ function typeNum(val) {
             input.value += val;
         }
     }
-    // בטלפון focus יכול להקפיץ מקלדת מערכת, אז נמנעים ממנו אם זה touch
     if (!('ontouchstart' in window)) {
         input.focus();
     }
