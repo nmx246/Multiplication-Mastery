@@ -65,7 +65,8 @@
 
                 <div id="game-play-screen" style="display:none;">
                     <div class="flashcard">
-                        <div id="questionCounterTop" class="top-question-num"></div>
+
+                        <div id="questionCounterTop" class="top-question-num">QUESTION 1/30</div>
 
                         <div class="game-screen-area" id="screenArea">
                             <h2 id="exerciseDisplay"></h2>
@@ -75,7 +76,7 @@
 
                         <input type="number" id="userGuess" inputmode="numeric" enterkeyhint="next" placeholder="?"
                             autocomplete="off"
-                            style="border: 3px solid #000; font-size: 36px; width: 140px; text-align: center; padding: 10px; font-family: inherit; margin-top: 10px;">
+                            style="border: 3px solid #000; font-size: 36px; width: 140px; text-align: center; padding: 10px; font-family: inherit; margin: 10px auto; display: block;">
 
                         <div id="numpad" class="numpad">
                             <div class="numpad-row">
@@ -131,19 +132,17 @@
                 <option value="Easy">EASY</option>
             </select>
         </div>
-        <div style="width:100%; overflow-x:auto; border: 2px solid #000;">
-            <table id="high-score-table">
-                <thead>
-                    <tr>
-                        <th class="col-rank">#</th>
-                        <th class="col-date">DATE</th>
-                        <th class="col-name">NAME</th>
-                        <th class="col-score">SCORE</th>
-                    </tr>
-                </thead>
-                <tbody id="high-score-body"></tbody>
-            </table>
-        </div>
+        <table id="high-score-table">
+            <thead>
+                <tr>
+                    <th class="col-rank">#</th>
+                    <th class="col-date">DATE</th>
+                    <th class="col-name">NAME</th>
+                    <th class="col-score">SCORE</th>
+                </tr>
+            </thead>
+            <tbody id="high-score-body"></tbody>
+        </table>
         <div class="footer-spacer"></div>
         <button class="clean-btn" onclick="showConfirmModal()">CLEAN SCORES</button>
     </div>
