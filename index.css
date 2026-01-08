@@ -394,11 +394,16 @@ td {
     margin: 0 10px;
 }
 
-/* --- השינויים שביקשת להגדלה בנייד --- */
+/* --- השינויים להגדלה בנייד עם תיקון המרג'ין והרוחב --- */
 @media (max-width: 600px) {
     .main-page-title {
         font-size: 32px;
         letter-spacing: 6px;
+    }
+
+    /* תיקון קריטי: צמצום הפדינג של המכונה כדי לאפשר למקלדת להתרחב */
+    .arcade-border {
+        padding: 10px 5px;
     }
 
     .game-screen-area h2 {
@@ -406,22 +411,22 @@ td {
     }
 
     .numpad {
-        width: 95%;
-        /* המקלדת מתפרסת על 95% מהמכונה */
+        width: 95% !important;
+        /* הבטחת רוחב */
         gap: 2px;
-        /* צמצום רווח בין שורות */
+        margin: 15px auto !important;
+        /* מרכוז אוטומטי */
     }
 
     .numpad-row {
         gap: 8px;
-        /* רווח בין המקשים בשורה */
+        width: 100%;
+        /* שהשורה תמלא את ה-numpad */
     }
 
     .num-btn {
         height: 85px;
-        /* הגובה שביקשת */
         font-size: 32px;
-        /* גודל פונט שביקשת */
         border-radius: 10px;
     }
 
