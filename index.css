@@ -452,7 +452,7 @@ td {
     margin: 0 10px;
 }
 
-/* התאמות למובייל כדי שהכל ייכנס למסך אחד */
+/* התאמות למובייל */
 @media (max-width: 600px) {
     body {
         padding: 20px 10px;
@@ -478,7 +478,6 @@ td {
         font-size: 42px;
     }
 
-    /* הקטנת המקשים למובייל */
     .num-btn {
         height: 60px;
         font-size: 28px;
@@ -517,7 +516,7 @@ td {
         transform: translate3d(-1px, 0, 0);
     }
 
-    30%,ש
+    30%,
     70% {
         transform: translate3d(-4px, 0, 0);
     }
