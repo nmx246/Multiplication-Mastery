@@ -10,22 +10,24 @@
 
 <body>
 
-    <h1 class="main-page-title">
-        <span>MULTIPLICATION</span>
-        <span>MASTERY</span>
-    </h1>
+    <div id="header-section">
+        <h1 class="main-page-title">
+            <span>MULTIPLICATION</span>
+            <span>MASTERY</span>
+        </h1>
 
-    <div class="rules-box">
-        <p class="rules-title">GAME RULES & SCORING</p>
-        <div class="rules-content">
-            <p>To achieve a perfect 100 score:</p>
-            <ul>
-                <li>Answer 30 questions correctly.</li>
-                <li>Finish in 5 minutes (300s) or less.</li>
-            </ul>
-            <div class="rules-footer">
-                <p class="penalty-text">⚠️ WRONG ANSWER: -3 POINTS</p>
-                <p class="penalty-text">⚠️ TIME OVER 5 MIN: -1 POINT PER 10 SECONDS</p>
+        <div class="rules-box">
+            <p class="rules-title">GAME RULES & SCORING</p>
+            <div class="rules-content">
+                <p>To achieve a perfect 100 score:</p>
+                <ul>
+                    <li>Answer 30 questions correctly.</li>
+                    <li>Finish in 5 minutes (300s) or less.</li>
+                </ul>
+                <div class="rules-footer">
+                    <p class="penalty-text">⚠️ WRONG ANSWER: -3 POINTS</p>
+                    <p class="penalty-text">⚠️ TIME OVER 5 MIN: -1 POINT PER 10 SECONDS</p>
+                </div>
             </div>
         </div>
     </div>
@@ -116,7 +118,7 @@
         </div>
     </div>
 
-    <div class="scoreboard-container">
+    <div class="scoreboard-container" id="footer-section">
         <p id="table-title">HALL OF FAME</p>
         <div class="dropdown-wrapper">
             <select id="levelSelector" class="level-dropdown" onchange="updateTableDisplay()">
