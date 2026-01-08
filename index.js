@@ -67,9 +67,11 @@ function startGame(choice) {
     document.getElementById('machine-title').innerText = currentLevelName.toUpperCase();
     document.getElementById('displayCurrentPlayer').innerText = `PLAYER: ${currentPlayer}`;
 
-    // --- התיקון לבקשתך כאן ---
-    const gameArea = document.getElementById('arcadeMachine');
-    gameArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // --- התיקון לגלילה המדויקת ---
+    setTimeout(() => {
+        const arcade = document.getElementById('arcadeMachine');
+        arcade.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
     // -----------------------
 
     startTime = Date.now();
