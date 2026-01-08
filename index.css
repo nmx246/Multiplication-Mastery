@@ -405,6 +405,15 @@ td {
     width: 20%;
 }
 
+/* New: Style for the clickable score */
+.score-link {
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 900;
+    display: block;
+    width: 100%;
+}
+
 .footer-spacer {
     height: 30px;
 }
@@ -442,6 +451,7 @@ td {
     border-radius: 20px;
     text-align: center;
     width: 400px;
+    max-width: 90%;
 }
 
 .modal-btn {
@@ -449,7 +459,8 @@ td {
     border: 3px solid #000;
     font-weight: bold;
     cursor: pointer;
-    margin: 0 10px;
+    margin: 10px;
+    font-family: inherit;
 }
 
 /* התאמות למובייל */
