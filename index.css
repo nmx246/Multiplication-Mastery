@@ -394,44 +394,50 @@ td {
     margin: 0 10px;
 }
 
-/* --- השינויים הנדרשים לתיקון הצורה בנייד --- */
+/* --- הגדרות מותאמות לנייד --- */
 @media (max-width: 600px) {
     .main-page-title {
         font-size: 32px;
         letter-spacing: 6px;
     }
 
-    /* 1. ביטול החנק מהצדדים של המכונה */
     .arcade-border {
-        padding: 20px 5px;
+        padding: 20px 10px; 
     }
 
     .game-screen-area h2 {
         font-size: 45px;
     }
 
-    /* 2. הגדלת רוחב המעטפת של המקלדת */
     .numpad {
-        width: 98% !important;
+        width: 100% !important; 
         gap: 8px;
-        /* רווח סביר בין השורות */
-        margin: 15px auto;
+        margin: 15px 0;
     }
 
-    /* 3. צמצום הרווח בין הכפתורים כדי שיגדלו הצידה ויהיו מלבנים */
     .numpad-row {
-        gap: 5px;
+        gap: 5px; 
+        width: 100%;
     }
 
     .num-btn {
-        height: 75px;
-        /* גובה מעט נמוך יותר מה-85 הקודם כדי לשמור על יחס מלבני */
-        font-size: 32px;
+        height: 70px;   
+        font-size: 30px; 
         border-radius: 10px;
+        flex: 1;
     }
 
-    td,
-    th {
+    /* הגדלת כפתור NEXT להתאמה למקלדת */
+    .action-btn {
+        width: 100%;
+        height: 80px;      /* גובה משמעותי יותר */
+        font-size: 24px;   /* טקסט גדול וברור */
+        border-radius: 12px;
+        margin-top: 10px;
+        letter-spacing: 2px;
+    }
+
+    td, th {
         font-size: 12px;
         padding: 10px 2px;
     }
@@ -442,19 +448,7 @@ td {
 }
 
 @keyframes shakeAnim {
-
-    10%,
-    90% {
-        transform: translate3d(-1px, 0, 0);
-    }
-
-    30%,
-    70% {
-        transform: translate3d(-4px, 0, 0);
-    }
-
-    40%,
-    60% {
-        transform: translate3d(4px, 0, 0);
-    }
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    30%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
 }
