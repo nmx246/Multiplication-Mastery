@@ -10,6 +10,23 @@ body {
     overflow-x: hidden;
 }
 
+/* --- פתרון ההסתרה למשחק פעיל --- */
+body.game-active #header-section,
+body.game-active #footer-section {
+    display: none;
+}
+
+body.game-active {
+    padding: 10px 20px;
+    /* צמצום המרווח למעלה כשהמשחק פעיל */
+}
+
+body.game-active .arcade-machine {
+    margin-top: 0;
+}
+
+/* ------------------------------- */
+
 .main-page-title {
     font-size: 70px;
     letter-spacing: 12px;
@@ -66,7 +83,6 @@ body {
     border: 2px solid #fff;
     border-radius: 40px;
     padding: 10px;
-    /* תיקון קטן לגלילה */
     scroll-margin-top: 10px;
 }
 
@@ -140,7 +156,6 @@ body {
     color: #fff;
 }
 
-/* --- ACTION BUTTONS (READY, NEXT, RESTART) --- */
 .action-btn {
     width: 90%;
     margin: 25px auto 0;
@@ -228,7 +243,6 @@ body {
     margin: 0;
 }
 
-/* --- NUMPAD --- */
 .numpad {
     display: flex;
     flex-direction: column;
@@ -318,7 +332,6 @@ body {
     background: #222;
 }
 
-/* --- SCOREBOARD --- */
 .scoreboard-container {
     background: #fff;
     color: #000;
@@ -427,7 +440,6 @@ td {
     margin: 0 10px;
 }
 
-/* --- MOBILE --- */
 @media (max-width: 600px) {
     .main-page-title {
         font-size: 32px;
@@ -436,6 +448,7 @@ td {
 
     .arcade-border {
         padding: 20px 10px;
+        min-height: 500px;
     }
 
     .game-screen-area h2 {
