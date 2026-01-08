@@ -404,7 +404,7 @@ td {
     }
 
     .arcade-border {
-        padding: 20px 10px; 
+        padding: 20px 10px;
     }
 
     .game-screen-area h2 {
@@ -412,19 +412,20 @@ td {
     }
 
     .numpad {
-        width: 100% !important; 
+        width: 100% !important;
         gap: 8px;
-        margin: 10px auto; /* צמצום מרחק מה-Next */
+        margin: 10px auto;
+        /* צמצום מרחק מה-Next */
     }
 
     .numpad-row {
-        gap: 5px; 
+        gap: 5px;
         width: 100%;
     }
 
     .num-btn {
-        height: 75px;   
-        font-size: 30px; 
+        height: 75px;
+        font-size: 30px;
         border-radius: 10px;
         flex: 1;
         border-bottom-width: 6px;
@@ -433,11 +434,15 @@ td {
     /* תיקון אגרסיבי לכפתור NEXT בנייד */
     .action-btn {
         width: 100% !important;
-        height: 85px !important;    /* גובה מאסיבי כמו המקלדת */
-        font-size: 28px !important;  /* פונט גדול */
-        margin: 10px 0 0 0 !important; /* צמצום המרווח בינו לבין המקלדת */
+        height: 85px !important;
+        /* גובה מאסיבי כמו המקלדת */
+        font-size: 28px !important;
+        /* פונט גדול */
+        margin: 10px 0 0 0 !important;
+        /* צמצום המרווח בינו לבין המקלדת */
         border-radius: 12px !important;
-        border-bottom: 8px solid #333 !important; /* הוספת "עומק" כמו למספרים */
+        border-bottom: 8px solid #333 !important;
+        /* הוספת "עומק" כמו למספרים */
     }
 
     /* הוספת אפקט לחיצה ל-NEXT */
@@ -446,7 +451,8 @@ td {
         border-bottom-width: 2px !important;
     }
 
-    td, th {
+    td,
+    th {
         font-size: 12px;
         padding: 10px 2px;
     }
@@ -457,7 +463,19 @@ td {
 }
 
 @keyframes shakeAnim {
-    10%, 90% { transform: translate3d(-1px, 0, 0); }
-    30%, 70% { transform: translate3d(-4px, 0, 0); }
-    40%, 60% { transform: translate3d(4px, 0, 0); }
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    30%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
 }
