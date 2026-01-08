@@ -24,10 +24,6 @@ function initButtonEffects() {
         btn.addEventListener('touchend', () => {
             btn.classList.remove('is-active');
         }, { passive: true });
-
-        btn.addEventListener('touchcancel', () => {
-            btn.classList.remove('is-active');
-        }, { passive: true });
     });
 }
 
@@ -67,10 +63,8 @@ function startGame(choice) {
     }
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('game-play-screen').style.display = 'block';
-
     document.getElementById('displayCurrentPlayer').innerText = `PLAYER: ${currentPlayer}`;
     document.getElementById('displayCurrentLevel').innerText = `LEVEL: ${currentLevelName.toUpperCase()}`;
-
     startTime = Date.now();
     setupInputListeners();
     showExercise();
@@ -106,11 +100,9 @@ function showExercise() {
     document.getElementById('exerciseDisplay').innerText = `${current.num1}×${current.num2}`;
     document.getElementById('questionCounterTop').innerText = `QUESTION ${currentIndex + 1}/30`;
     document.getElementById('feedbackArea').innerHTML = lastFeedback;
-
     const input = document.getElementById('userGuess');
     input.value = '';
     input.disabled = false;
-
     if (!('ontouchstart' in window)) {
         setTimeout(() => { input.focus(); }, 10);
     }
@@ -119,11 +111,8 @@ function showExercise() {
 function checkAnswer() {
     const input = document.getElementById('userGuess');
     const val = parseInt(input.value);
-
     if (isNaN(val)) return;
-
     const correctAns = exercises[currentIndex].num1 * exercises[currentIndex].num2;
-
     if (val === correctAns) {
         correctAnswers++;
         lastFeedback = `<span style="color:green">${positiveWords[Math.floor(Math.random() * positiveWords.length)]}</span>`;
@@ -134,9 +123,7 @@ function checkAnswer() {
         screen.classList.add('shake');
         setTimeout(() => screen.classList.remove('shake'), 400);
     }
-
     document.getElementById('feedbackArea').innerHTML = lastFeedback;
-
     if (currentIndex === exercises.length - 1) {
         document.getElementById('nextBtn').style.display = 'none';
         document.getElementById('finishBtn').style.display = 'block';
@@ -160,13 +147,13 @@ function finishGame() {
     const durationSeconds = durationMs / 1000;
     const timePenalty = Math.max(0, (durationSeconds - 300) / 10);
     const finalScore = Math.round(Math.max(0, baseScore - timePenalty));
-
     const successRate = ((correctAnswers / 30) * 100).toFixed(2);
     const timeStr = formatTime(durationMs);
     const now = new Date();
     const dateStr = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()}`;
 
-    saveHighScore(currentPlayer, finalScore, dateStr);
+    // שמירה מורחבת
+    saveHighScore(currentPlayer, finalScore, dateStr, correctAnswers, successRate, timeStr);
 
     document.getElementById('end-screen').innerHTML = `
         <div style="font-weight: bold; margin-top: 20px; line-height: 1.6;">
@@ -184,11 +171,11 @@ function finishGame() {
     updateTableDisplay();
 }
 
-function saveHighScore(name, score, date) {
+function saveHighScore(name, score, date, correct, success, time) {
     try {
         const key = `highScores_${currentLevelName}`;
         let scores = JSON.parse(localStorage.getItem(key)) || [];
-        scores.push({ name, score, date });
+        scores.push({ name, score, date, correct, success, time });
         scores.sort((a, b) => b.score - a.score);
         localStorage.setItem(key, JSON.stringify(scores.slice(0, 10)));
     } catch (e) { console.error("Save failed", e); }
@@ -196,21 +183,41 @@ function saveHighScore(name, score, date) {
 
 function updateTableDisplay() {
     try {
-        const levelSelector = document.getElementById('levelSelector');
-        if (!levelSelector) return;
-        const level = levelSelector.value;
+        const level = document.getElementById('levelSelector').value;
         const scores = JSON.parse(localStorage.getItem(`highScores_${level}`)) || [];
         const tableBody = document.getElementById('high-score-body');
-        if (!tableBody) return;
         tableBody.innerHTML = scores.map((s, i) => `
             <tr>
                 <td class="col-rank">#${i + 1}</td>
                 <td class="col-date">${s.date}</td>
                 <td class="col-name"><b>${s.name}</b></td>
-                <td class="col-score" style="font-weight: 900;">${s.score}</td>
+                <td class="col-score">
+                    <span class="score-link" onclick="showScoreDetail('${level}', ${i})">${s.score}</span>
+                </td>
             </tr>
         `).join('');
     } catch (e) { console.error("Update failed", e); }
+}
+
+function showScoreDetail(level, index) {
+    const scores = JSON.parse(localStorage.getItem(`highScores_${level}`));
+    const s = scores[index];
+    if (!s.time) { // תמיכה בנתונים ישנים אם קיימים
+        document.getElementById('detailContent').innerHTML = "<p>No detailed data for this old score.</p>";
+    } else {
+        document.getElementById('detailContent').innerHTML = `
+            <p><b>PLAYER:</b> ${s.name}</p>
+            <p><b>CORRECT:</b> ${s.correct}/30</p>
+            <p><b>SUCCESS RATE:</b> ${s.success}%</p>
+            <p><b>DURATION:</b> ${s.time}</p>
+            <div style="background:#000; color:#fff; text-align:center; padding:10px; margin-top:10px; font-weight:900;">SCORE: ${s.score}</div>
+        `;
+    }
+    document.getElementById('scoreDetailModal').style.display = 'flex';
+}
+
+function closeDetailModal() {
+    document.getElementById('scoreDetailModal').style.display = 'none';
 }
 
 window.onload = () => {
