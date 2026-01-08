@@ -66,6 +66,8 @@ body {
     border: 2px solid #fff;
     border-radius: 40px;
     padding: 10px;
+    /* תיקון קטן לגלילה */
+    scroll-margin-top: 10px;
 }
 
 .arcade-border {
