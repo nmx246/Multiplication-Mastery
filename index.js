@@ -12,32 +12,30 @@ const positiveWords = ["Correct!", "Good Job!", "Amazing!", "Excellent!", "Aweso
 function initButtonEffects() {
     const allBtns = document.querySelectorAll('.num-btn, .action-btn');
     allBtns.forEach(btn => {
+        // וודא שיש data-label בשביל ה-CSS
         if (!btn.getAttribute('data-label')) {
             btn.setAttribute('data-label', btn.innerText);
         }
 
         btn.addEventListener('touchstart', () => {
             btn.classList.add('is-active');
-            if (window.navigator.vibrate) window.navigator.vibrate(10);
+            if (window.navigator.vibrate) window.navigator.vibrate([10, 5, 10]);
         }, { passive: true });
 
         btn.addEventListener('touchend', () => {
             btn.classList.remove('is-active');
         }, { passive: true });
+
+        btn.addEventListener('mousedown', () => btn.classList.add('is-active'));
+        btn.addEventListener('mouseup', () => btn.classList.remove('is-active'));
+        btn.addEventListener('mouseleave', () => btn.classList.remove('is-active'));
     });
 }
 
-function showConfirmModal() {
-    document.getElementById('confirmModal').style.display = 'flex';
-}
-
+function showConfirmModal() { document.getElementById('confirmModal').style.display = 'flex'; }
 function confirmClean(isSure) {
-    if (isSure) {
-        localStorage.clear();
-        location.reload();
-    } else {
-        document.getElementById('confirmModal').style.display = 'none';
-    }
+    if (isSure) { localStorage.clear(); location.reload(); }
+    else { document.getElementById('confirmModal').style.display = 'none'; }
 }
 
 function validateAndStart() {
@@ -75,24 +73,16 @@ function setupInputListeners() {
     input.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
             e.preventDefault();
-            if (currentIndex < exercises.length) {
-                checkAnswer();
-            }
+            if (currentIndex < exercises.length) checkAnswer();
         }
     });
 }
 
 function typeNum(val) {
     const input = document.getElementById('userGuess');
-    if (val === 'del') {
-        input.value = input.value.slice(0, -1);
-    } else if (val === 'clear') {
-        input.value = '';
-    } else {
-        if (input.value.length < 6) {
-            input.value += val;
-        }
-    }
+    if (val === 'del') input.value = input.value.slice(0, -1);
+    else if (val === 'clear') input.value = '';
+    else if (input.value.length < 6) input.value += val;
 }
 
 function showExercise() {
@@ -103,9 +93,7 @@ function showExercise() {
     const input = document.getElementById('userGuess');
     input.value = '';
     input.disabled = false;
-    if (!('ontouchstart' in window)) {
-        setTimeout(() => { input.focus(); }, 10);
-    }
+    if (!('ontouchstart' in window)) setTimeout(() => { input.focus(); }, 10);
 }
 
 function checkAnswer() {
@@ -151,10 +139,7 @@ function finishGame() {
     const timeStr = formatTime(durationMs);
     const now = new Date();
     const dateStr = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()}`;
-
-    // שמירה מורחבת
     saveHighScore(currentPlayer, finalScore, dateStr, correctAnswers, successRate, timeStr);
-
     document.getElementById('end-screen').innerHTML = `
         <div style="font-weight: bold; margin-top: 20px; line-height: 1.6;">
             <h2 style="border-bottom: 2px solid #000; margin-bottom: 20px; font-size: 32px;">GAME OVER</h2>
@@ -163,7 +148,7 @@ function finishGame() {
                 <p>SUCCESS RATE: ${successRate}%</p>
                 <p>DURATION: ${timeStr}</p>
             </div>
-            <div style="font-size: 36px; border: 4px solid #000; padding: 20px; margin: 25px auto; background:#000; color:#fff; width: fit-content; text-shadow: 0 0 5px #fff;">
+            <div style="font-size: 36px; border: 4px solid #000; padding: 20px; margin: 25px auto; background:#000; color:#fff; width: fit-content;">
                 SCORE: ${finalScore}
             </div>
         </div>
@@ -202,9 +187,7 @@ function updateTableDisplay() {
 function showScoreDetail(level, index) {
     const scores = JSON.parse(localStorage.getItem(`highScores_${level}`));
     const s = scores[index];
-    if (!s.time) { // תמיכה בנתונים ישנים אם קיימים
-        document.getElementById('detailContent').innerHTML = "<p>No detailed data for this old score.</p>";
-    } else {
+    if (s) {
         document.getElementById('detailContent').innerHTML = `
             <p><b>PLAYER:</b> ${s.name}</p>
             <p><b>CORRECT:</b> ${s.correct}/30</p>
@@ -216,9 +199,7 @@ function showScoreDetail(level, index) {
     document.getElementById('scoreDetailModal').style.display = 'flex';
 }
 
-function closeDetailModal() {
-    document.getElementById('scoreDetailModal').style.display = 'none';
-}
+function closeDetailModal() { document.getElementById('scoreDetailModal').style.display = 'none'; }
 
 window.onload = () => {
     initButtonEffects();
