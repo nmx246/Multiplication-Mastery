@@ -141,7 +141,9 @@ body {
     color: #fff;
 }
 
-.action-btn {
+/* --- עיצוב כפתורים עם אפקט מסתובב וטקסט שהופך לכחול --- */
+.action-btn,
+.num-btn {
     width: 90%;
     margin: 25px auto 0;
     height: 65px;
@@ -150,7 +152,8 @@ body {
     font-family: inherit;
     font-weight: 900;
     background: #000;
-    color: #fff;
+    color: transparent;
+    /* מסתיר את הטקסט המקורי */
     cursor: pointer;
     text-transform: uppercase;
     font-size: 18px;
@@ -160,24 +163,33 @@ body {
     border-radius: 12px;
     position: relative;
     overflow: hidden;
+    z-index: 1;
     transition: all 0.05s ease;
     top: 0;
-    z-index: 1;
-    -webkit-tap-highlight-color: transparent;
 }
 
-.action-btn::before {
+.num-btn {
+    width: 100%;
+    margin: 0;
+    font-size: 26px;
+    flex: 1;
+}
+
+.action-btn::before,
+.num-btn::before {
     content: '';
     position: absolute;
     width: 250%;
     height: 500%;
-    background: conic-gradient(transparent, transparent, transparent, #fff, #fff, transparent);
+    background: conic-gradient(transparent, transparent, transparent, #00d2ff, #3a7bd5, transparent);
     animation: rotateNeon 0.8s linear infinite;
     display: none;
     z-index: -2;
 }
 
-.action-btn::after {
+/* השכבה השחורה הפנימית שמציגה את הטקסט */
+.action-btn::after,
+.num-btn::after {
     content: attr(data-label);
     position: absolute;
     inset: 5px;
@@ -187,31 +199,47 @@ body {
     align-items: center;
     justify-content: center;
     z-index: -1;
-}
-
-.finish-btn {
-    background: #000;
     color: #fff;
-    border-color: #000;
-}
-
-.finish-btn::after {
-    background: #000;
-    color: #fff;
+    /* לבן כברירת מחדל */
+    transition: color 0.1s ease;
 }
 
 .action-btn:active,
-.action-btn.is-active {
+.action-btn.is-active,
+.num-btn:active,
+.num-btn.is-active {
     top: 6px;
     border-bottom-width: 2px;
-    box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
 }
 
 .action-btn:active::before,
-.action-btn.is-active::before {
+.action-btn.is-active::before,
+.num-btn:active::before,
+.num-btn.is-active::before {
     display: block;
 }
 
+/* כאן השינוי: הטקסט הופך לכחול בלחיצה */
+.action-btn:active::after,
+.action-btn.is-active::after,
+.num-btn:active::after,
+.num-btn.is-active::after {
+    color: #00d2ff !important;
+    text-shadow: 0 0 10px #00d2ff;
+}
+
+@keyframes rotateNeon {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* שאר ה-CSS המקורי שלך */
 .top-question-num {
     font-weight: bold;
     font-size: 20px;
@@ -245,6 +273,19 @@ body {
     margin-bottom: 10px;
 }
 
+#userGuess {
+    width: 100%;
+    padding: 15px;
+    font-family: inherit;
+    font-size: 32px;
+    text-align: center;
+    border: 3px solid #000;
+    border-radius: 12px;
+    background: #fff;
+    color: #000;
+    margin-bottom: 10px;
+}
+
 .numpad {
     display: flex;
     flex-direction: column;
@@ -257,73 +298,6 @@ body {
     display: flex;
     gap: 12px;
     justify-content: center;
-}
-
-.num-btn {
-    flex: 1;
-    height: 65px;
-    background: #000;
-    color: #fff;
-    border: 3px solid #000;
-    border-bottom: 8px solid #333;
-    font-family: inherit;
-    font-size: 26px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.05s ease;
-    top: 0;
-    z-index: 1;
-}
-
-.num-btn::before {
-    content: '';
-    position: absolute;
-    width: 250%;
-    height: 250%;
-    background: conic-gradient(transparent, transparent, transparent, #fff, #fff, transparent);
-    animation: rotateNeon 0.8s linear infinite;
-    display: none;
-    z-index: -2;
-}
-
-.num-btn::after {
-    content: attr(data-label);
-    position: absolute;
-    inset: 5px;
-    background: #000;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: -1;
-}
-
-.num-btn:active,
-.num-btn.is-active {
-    top: 6px;
-    border-bottom-width: 2px;
-    box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.7);
-}
-
-.num-btn:active::before,
-.num-btn.is-active::before {
-    display: block;
-}
-
-@keyframes rotateNeon {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
 }
 
 .del-btn,
@@ -366,6 +340,7 @@ body {
     font-weight: bold;
     border: 3px solid #000;
     background: #fff;
+    margin-bottom: 20px;
 }
 
 table {
@@ -405,7 +380,6 @@ td {
     width: 20%;
 }
 
-/* New: Style for the clickable score */
 .score-link {
     text-decoration: underline;
     cursor: pointer;
@@ -463,7 +437,6 @@ td {
     font-family: inherit;
 }
 
-/* התאמות למובייל */
 @media (max-width: 600px) {
     body {
         padding: 20px 10px;
